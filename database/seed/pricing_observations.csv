@@ -1,0 +1,33 @@
+obs_id,provider_id,vehicle_id,vehicle_class,obs_year,mileage_at_purchase,mileage_band,age_band,term_months,term_mileage,deductible,coverage_tier,retail_price,dealer_cost_est,markup_est,monthly_est,down_payment,state,source_type,confidence,source_url,date_collected,notes
+1,9,1,,2021,30000,12001_36000,4_6,36,45000,100,powertrain,1450,870,580,40,0,TX,estimated,medium,,2026-05-10,Toyota Camry OEM powertrain - low-risk reliable sedan
+2,9,1,,2021,30000,12001_36000,4_6,60,75000,0,exclusionary,3200,1900,1300,53,0,TX,estimated,medium,,2026-05-10,Toyota Camry OEM exclusionary 5yr
+3,1,2,,2021,45000,36001_60000,4_6,48,60000,100,stated_component,2400,1450,950,50,0,FL,estimated,medium,,2026-05-11,Honda Accord DTC stated-component
+4,8,2,,2021,30000,12001_36000,4_6,36,36000,0,exclusionary,1800,1150,650,50,0,OH,public_quote,medium,https://www.consumeraffairs.com/automotive/honda-extended-warranty.html,2026-05-12,Honda Care top of published 700-1800 range
+5,8,6,,2021,48000,36001_60000,4_6,48,48000,100,exclusionary,2300,1450,850,48,0,OH,public_quote,medium,https://www.consumeraffairs.com/automotive/honda-extended-warranty.html,2026-05-12,Honda Care CR-V - 1.5T oil dilution risk noted
+6,9,5,,2021,45000,36001_60000,4_6,36,45000,100,powertrain_plus,1700,1050,650,47,0,TX,estimated,medium,,2026-05-12,Toyota RAV4 powertrain plus
+7,10,3,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,3400,2050,1350,71,0,TX,estimated,medium,,2026-05-13,Ford F-150 EcoBoost - truck severity
+8,11,4,,2021,55000,36001_60000,4_6,48,60000,100,comprehensive,3100,1900,1200,65,0,TX,estimated,medium,,2026-05-13,Chevrolet Silverado fullsize truck
+9,12,7,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,4200,2400,1800,88,0,MI,estimated,medium,,2026-05-14,Jeep Grand Cherokee - high claims risk (CR last place)
+10,12,7,,2021,45000,36001_60000,4_6,36,45000,100,powertrain,2200,1300,900,61,0,MI,estimated,medium,,2026-05-14,Jeep Grand Cherokee powertrain only
+11,1,8,,2021,55000,36001_60000,4_6,48,60000,100,comprehensive,3300,2000,1300,69,0,GA,estimated,medium,,2026-05-15,Dodge Charger R/T V8 performance
+12,14,9,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,4800,1900,2900,100,0,CA,dealer_quote,medium,,2026-05-16,BMW 3 Series F&I OPENING OFFER - marked up ~2.5x cost
+13,1,9,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,3900,2350,1550,81,0,CA,estimated,medium,,2026-05-16,BMW 3 Series fair DTC estimate
+14,1,10,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,4300,2600,1700,90,0,CA,estimated,medium,,2026-05-16,Mercedes-Benz C-Class - highest luxury parts severity
+15,5,11,,2021,45000,36001_60000,4_6,36,45000,0,exclusionary,16238,10555,5683,451,0,CA,public_quote,medium,https://www.consumeraffairs.com/automotive/tesla-model-3-extended-warranty.html,2026-05-17,olive quoted 5412.50/yr x3yr bumper-to-bumper Tesla Model 3
+16,13,11,,2021,25000,12001_36000,4_6,24,25000,0,ev_hybrid,2400,,,100,0,CA,public_quote,medium,https://www.consumeraffairs.com/automotive/tesla-extended-warranty.html,2026-05-17,Tesla ESA 50-150/mo direct-only; midpoint 100/mo
+17,2,12,,2021,55000,36001_60000,4_6,48,60000,100,powertrain_plus,2100,1300,800,44,0,NV,estimated,medium,,2026-05-18,Hyundai Elantra economy
+18,1,13,,2021,55000,36001_60000,4_6,48,60000,100,comprehensive,2700,1650,1050,56,0,CO,estimated,medium,,2026-05-18,Kia Telluride midsize SUV
+19,2,14,,2021,55000,36001_60000,4_6,48,60000,100,stated_component,2500,1500,1000,52,0,NV,estimated,medium,,2026-05-18,Nissan Altima - CVT failure history raises risk
+20,1,15,,2021,55000,36001_60000,4_6,48,60000,100,comprehensive,2600,1600,1000,54,0,WA,estimated,medium,,2026-05-18,Subaru Outback AWD boxer
+21,17,9,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,3300,2700,600,69,0,CA,estimated,low,,2026-05-19,BMW 3 Series CREDIT UNION low-markup reference (price floor)
+22,17,1,,2021,45000,36001_60000,4_6,36,45000,100,powertrain,1150,950,200,32,0,TX,estimated,low,,2026-05-19,Toyota Camry CREDIT UNION cost-plus floor
+23,1,1,,2021,100000,85001_100000,7_10,36,45000,100,powertrain,1900,1150,750,53,0,TX,estimated,medium,,2026-05-20,Toyota Camry HIGH MILEAGE - price steps up past 85k
+24,2,7,,2021,110000,100001_125000,7_10,36,40000,100,stated_component,3600,2200,1400,100,0,MI,estimated,medium,,2026-05-20,Jeep Grand Cherokee HIGH MILEAGE high-risk
+25,,,ev,2024,15000,12001_36000,0_3,48,60000,0,exclusionary,7550,,,157,0,CA,public_quote,medium,https://www.consumeraffairs.com/automotive/tesla-model-3-extended-warranty.html,2026-05-21,Mercedes-Benz EQS 4yr quote - luxury EV class reference
+26,,,ev,2024,15000,12001_36000,0_3,48,60000,0,exclusionary,8112,,,169,0,CA,public_quote,medium,https://www.consumeraffairs.com/automotive/tesla-model-3-extended-warranty.html,2026-05-21,Porsche Taycan 4yr quote - luxury EV class reference
+27,9,5,,2021,75000,60001_85000,4_6,60,75000,0,exclusionary,2900,1750,1150,48,0,TX,estimated,medium,,2026-05-22,Toyota RAV4 exclusionary 5yr higher mileage
+28,10,3,,2021,45000,36001_60000,4_6,36,45000,100,powertrain,2000,1200,800,56,0,TX,estimated,medium,,2026-05-22,Ford F-150 powertrain only
+29,14,10,,2021,55000,36001_60000,4_6,48,60000,100,exclusionary,6200,2600,3600,129,0,CA,dealer_quote,medium,,2026-05-23,Mercedes C-Class F&I OPENING OFFER ~2.4x cost
+30,1,6,,2021,55000,36001_60000,4_6,48,60000,100,powertrain_plus,2200,1350,850,46,0,OH,estimated,medium,,2026-05-23,Honda CR-V powertrain plus
+31,2,12,,2021,45000,36001_60000,4_6,36,45000,100,powertrain,1500,950,550,42,0,NV,estimated,low,,2026-05-24,Hyundai Elantra powertrain only DTC
+32,17,7,,2021,45000,36001_60000,4_6,36,45000,100,powertrain,2000,1650,350,56,0,MI,estimated,low,,2026-05-24,Jeep Grand Cherokee CREDIT UNION cost-plus floor

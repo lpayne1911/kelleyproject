@@ -1,0 +1,4 @@
+submission_id,date_submitted,submitter_ref,offer_type,provider_name,make,model,model_year,trim,mileage_at_purchase,mileage_band,age_band,state,term_months,term_mileage,deductible,coverage_tier,price,per_year,monthly,down_payment,source_type,confidence,review_status,dedupe_key,notes
+1,2026-06-01,example,dealer_initial,Dealer F&I,BMW,3 Series,2021,330i,48000,36001_60000,4_6,CA,48,60000,100,exclusionary,4800,1200,100,0,dealer_quote,low,pending,seed-example-1,EXAMPLE submission - dealer opening offer
+2,2026-06-02,example,price_paid,Toyota dealer,Toyota,Camry,2020,LE,60000,36001_60000,4_6,TX,36,45000,100,powertrain,1200,400,33,0,consumer_reported,medium,pending,seed-example-2,EXAMPLE submission - price actually paid after negotiation
+3,2026-06-03,example,outside_quote,Local Credit Union,Honda,Accord,2021,EX,40000,36001_60000,4_6,OH,60,75000,0,comprehensive,2200,440,37,0,public_quote,medium,pending,seed-example-3,EXAMPLE submission - outside credit-union quote

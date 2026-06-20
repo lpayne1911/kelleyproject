@@ -1,0 +1,18 @@
+provider_id,name,provider_type,channel,business_role,self_administers,publishes_quotes_online,am_best_backer,bbb_rating,review_score,source_type,confidence,notes
+1,Endurance,third_party,dtc,administrator,1,1,,B,4.2,public_quote,medium,Self-administers its own plans and claims
+2,CarShield,third_party,dtc,broker,0,1,,B,3.9,public_quote,medium,Broker reselling third-party administrators; broad eligibility
+3,CARCHEX,third_party,dtc,broker,0,1,,A+,4.0,public_quote,medium,Long-standing broker; multiple administrators
+4,Protect My Car,third_party,dtc,administrator,0,1,,A+,4.0,public_quote,medium,Maintenance-bundled tiers
+5,olive,third_party,dtc,administrator,1,1,,A+,4.1,public_quote,medium,Fully online no-inspection; covers EVs; month-to-month options
+6,autopom!,third_party,dtc,broker,0,0,,A+,4.5,public_quote,medium,High-touch agency; CA-compliant options
+7,Everything Breaks,third_party,dtc,administrator,1,0,,,3.8,estimated,low,Bundles multiple protection products
+8,Honda Care,oem,oem,oem,1,0,American Honda,A+,4.4,public_quote,medium,OEM-backed; up to 8yr/120k
+9,Toyota Extra Care (ECP/VSA),oem,oem,oem,1,0,Toyota Motor Insurance,A+,4.4,public_quote,medium,OEM-backed; up to 10yr/125k
+10,Ford Protect,oem,oem,oem,1,0,Ford Motor Company,A,4.1,public_quote,medium,OEM-backed; PremiumCARE is exclusionary
+11,GM Protection Plan,oem,oem,oem,1,0,General Motors,A,4.1,public_quote,medium,OEM-backed; Cadillac priced higher
+12,Mopar Vehicle Protection,oem,oem,oem,1,0,Stellantis,A,3.9,public_quote,medium,OEM-backed Jeep/Ram/Dodge/Chrysler
+13,Tesla ESA,oem,oem,oem,1,0,Tesla,,3.7,public_quote,medium,Direct only; no third-party ESA on Model 3 after expiry
+14,Fidelity Warranty Services,dealer_admin,dealer,administrator,1,0,JM Family,A+,3.8,estimated,low,Dealer-sold administrator behind many F&I plans
+15,Zurich,dealer_admin,dealer,insurer,1,0,Zurich Insurance,A+,3.9,estimated,low,Dealer-sold; AM Best A+ insurer backer
+16,CNA National,dealer_admin,dealer,administrator,1,0,CNA,A,3.9,estimated,low,Dealer-sold administrator
+17,Local Credit Union MBI,credit_union,credit_union,administrator,0,0,Varies (Route 66/CURO),,4.3,estimated,low,Low-markup member benefit; often cheapest legitimate price

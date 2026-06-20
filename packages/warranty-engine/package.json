@@ -1,0 +1,29 @@
+{
+  "name": "@drivewayadvocate/warranty-engine",
+  "version": "0.1.0",
+  "description": "Vehicle service contract risk scoring + fair-price engine (TypeScript port). Dependency-free; runs in Next.js/React web or React Native.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "keywords": ["vehicle-service-contract", "extended-warranty", "automotive", "pricing"],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  }
+}
