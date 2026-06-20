@@ -1,8 +1,10 @@
+import type { CSSProperties } from "react";
 import {
   usd,
   pct,
   type QuoteResult as QuoteResultType,
   type QuoteRequest,
+  type RiskLabel,
 } from "../lib/engine";
 import { VerdictBadge } from "./VerdictBadge";
 import { RiskBadge } from "./RiskBadge";
@@ -12,9 +14,29 @@ interface Props {
   request: QuoteRequest;
 }
 
+const RISK_COLOR: Record<RiskLabel, string> = {
+  Low: "#16C784",
+  Moderate: "#3AA0FF",
+  Elevated: "#F5A524",
+  High: "#F31260",
+};
+
 export function QuoteResult({ result, request }: Props) {
   const { score } = result;
   const offer = request.dealerOffer;
+
+  const span = result.fairHigh - result.fairLow;
+  const offerPos =
+    offer != null && span > 0
+      ? Math.max(0, Math.min(100, ((offer - result.fairLow) / span) * 100))
+      : null;
+  const offerBeyond =
+    offer != null && (offer < result.fairLow || offer > result.fairHigh);
+
+  const dialStyle = {
+    "--score": score.fullScore,
+    "--ring": RISK_COLOR[score.riskLabel],
+  } as CSSProperties;
 
   return (
     <div className="card result">
@@ -29,41 +51,60 @@ export function QuoteResult({ result, request }: Props) {
             <RiskBadge label={score.riskLabel} />
             <span className="pill pill--source">
               {result.confidence === "blended"
-                ? `Blended w/ ${result.observedN} real offer${
+                ? `Blended · ${result.observedN} real offer${
                     result.observedN === 1 ? "" : "s"
                   }`
                 : "Estimated"}
             </span>
           </div>
         </div>
-        <div className="score-dial" title="Warranty-risk score (1–100)">
-          <span className="score-dial__num">{score.fullScore}</span>
-          <span className="score-dial__label">risk score</span>
+        <div className="score-dial" style={dialStyle} title="Warranty-risk score (1–100)">
+          <span className="score-dial__num num">{score.fullScore}</span>
+          <span className="score-dial__label">risk</span>
         </div>
       </header>
 
       <section className="fairbar">
-        <h3>Fair market range</h3>
-        <div className="fairbar__track">
-          <div className="fairbar__seg">
-            <span className="fairbar__cap">{usd(result.fairLow)}</span>
-            <small>low</small>
+        <div className="fairbar__head">
+          <h3>Fair market range</h3>
+          {offer != null && (
+            <span className={`delta delta--${(result.verdict ?? "fair").toLowerCase()}`}>
+              {pct(result.offerVsFairPct)} vs. fair
+            </span>
+          )}
+        </div>
+
+        <div className="meter">
+          <div className="meter__track">
+            <div className="meter__fairzone" />
+            <div className="meter__mid" />
+            {offerPos != null && (
+              <div
+                className={`meter__marker${offerBeyond ? " meter__marker--out" : ""}`}
+                style={{ left: `${offerPos}%` } as CSSProperties}
+                title={`Offer ${usd(offer!)}`}
+              >
+                <span className="meter__flag num">{usd(offer!)}</span>
+              </div>
+            )}
           </div>
-          <div className="fairbar__seg fairbar__seg--mid">
-            <span className="fairbar__cap">{usd(result.fairMid)}</span>
-            <small>fair mid</small>
-          </div>
-          <div className="fairbar__seg">
-            <span className="fairbar__cap">{usd(result.fairHigh)}</span>
-            <small>high</small>
+          <div className="meter__scale">
+            <span className="num">{usd(result.fairLow)}</span>
+            <span className="meter__mid-cap num">{usd(result.fairMid)}</span>
+            <span className="num">{usd(result.fairHigh)}</span>
           </div>
         </div>
+
         {offer != null && (
-          <p className="muted">
-            Dealer's offer <strong>{usd(offer)}</strong> is{" "}
-            <strong>{pct(result.offerVsFairPct)}</strong> vs. fair mid
+          <p className="muted small">
+            Offer <strong className="num">{usd(offer)}</strong> ·{" "}
+            <strong className="num">{pct(result.offerVsFairPct)}</strong> vs. fair mid
             {result.markupVsCostPct != null && (
-              <> · {pct(result.markupVsCostPct)} vs. estimated dealer cost</>
+              <>
+                {" "}
+                · <strong className="num">{pct(result.markupVsCostPct)}</strong> vs.
+                est. dealer cost
+              </>
             )}
             .
           </p>
@@ -79,9 +120,7 @@ export function QuoteResult({ result, request }: Props) {
       <section className="reco">
         <h3>Recommendation</h3>
         <p>{result.recommendation}</p>
-        {result.markupWarning && (
-          <p className="warning">⚠️ {result.markupWarning}</p>
-        )}
+        {result.markupWarning && <p className="warning">⚠️ {result.markupWarning}</p>}
       </section>
 
       {result.explanation.length > 0 && (
@@ -126,7 +165,7 @@ function Metric({
 }) {
   return (
     <div className={`metric${highlight ? " metric--hl" : ""}`}>
-      <span className="metric__val">{value}</span>
+      <span className="metric__val num">{value}</span>
       <span className="metric__label">{label}</span>
     </div>
   );

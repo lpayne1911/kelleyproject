@@ -18,7 +18,7 @@ export function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand__mark">🚗</span>
+          <span className="brand__mark">DA</span>
           <div>
             <strong>Driveway Advocate</strong>
             <small>The KBB for vehicle service contracts</small>
@@ -42,7 +42,22 @@ export function App() {
 
       <main className="main">
         {tab === "check" ? (
-          <div className="columns">
+          <>
+            <section className="hero">
+              <h1>
+                Know a <span className="grad">fair price</span> before you sign.
+              </h1>
+              <p>
+                Independent, data-driven fair-market estimates for vehicle service
+                contracts — so a dealer's offer meets a number, not a guess.
+              </p>
+              <div className="hero__chips">
+                <span>FAIR · NEGOTIATE · OVERPRICED verdict</span>
+                <span>Risk-scored pricing</span>
+                <span>Blended with real offers</span>
+              </div>
+            </section>
+            <div className="columns">
             <QuoteForm
               onResult={(result, request) => {
                 setQuote({ result, request });
@@ -65,7 +80,8 @@ export function App() {
                 )
               )}
             </div>
-          </div>
+            </div>
+          </>
         ) : (
           <SubmissionForm />
         )}
