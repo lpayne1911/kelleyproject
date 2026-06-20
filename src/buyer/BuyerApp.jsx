@@ -33,7 +33,9 @@ export default function BuyerApp() {
   return (
     <Phone label="Buyer App" dotColor={GREEN}>
       <AppHeader title="Driveway Advocate" brandColor={GREEN} />
-      <div className="body">{screens[tab]}</div>
+      {/* Messages owns its own full-height flex layout (sticky input);
+          every other screen scrolls inside the standard .body wrapper. */}
+      {tab === 'messages' ? screens.messages : <div className="body">{screens[tab]}</div>}
 
       {tab !== 'messages' && (
         <button className="help-pill">
