@@ -24,8 +24,8 @@ buying.**
 | `database/seed/` | Seed CSVs: providers, vehicles, risk scores, coverage tiers, bands, 30+ labeled pricing observations, and crowdsourced submissions. |
 | `scoring/risk-scoring-model.md` | The 1–100 vehicle warranty-risk model: variables, weights, formula, worked examples. |
 | `templates/` | Quote-collection template (for researchers) and the **submission intake** template (for crowdsourcing real offers). |
-| `src/drivewayadvocate/` | The Python tool: build the DB, score a vehicle, price a VSC, ingest real submissions, run from the CLI. |
-| `tests/` | Pytest suite for the scoring, pricing, DB, ingestion, and CLI layers. |
+| `src/drivewayadvocate/` | The Python tool: build the DB, score a vehicle, price a VSC, ingest real submissions, CLI, and an optional FastAPI web layer (`api.py`). |
+| `tests/` | Pytest suite for the scoring, pricing, DB, ingestion, CLI, and API layers. |
 
 ## Data integrity
 
@@ -84,8 +84,30 @@ marked-up anchors used to measure markup); *prices actually paid* and *outside q
 the fair-price signal. See
 [`templates/submission-intake-template.md`](templates/submission-intake-template.md).
 
+## Web app + API (optional)
+
+A FastAPI layer wraps the same engine + ingestion core so people can price an offer and
+"show us theirs" from a browser:
+
+```bash
+pip install -e ".[web]"
+python -m drivewayadvocate.api        # serves http://127.0.0.1:8000
+```
+
+| Route | Purpose |
+|-------|---------|
+| `GET /` | One-page UI: price-check form + submission form |
+| `POST /api/quote` | Advocacy report (JSON) for a vehicle/offer |
+| `POST /api/submissions` | Submit one real offer (queued for moderation) |
+| `GET /api/submissions?status=pending` | List submissions |
+| `GET /docs` | Auto-generated OpenAPI docs |
+
+The API is an **optional extra** — the core CLI/engine stays standard-library only.
+
 ## Roadmap
 
-This is the **foundation**. The reusable engine (`pricing.py` + `scoring.py`) is designed
-so a future web/API layer (FastAPI) and a consumer-facing UI can wrap it without changing
-the core logic. Next steps are tracked in `research/07-business-use-case.md`.
+The engine (`pricing.py` + `scoring.py`), the crowdsourced ingestion pipeline
+(`ingest.py`), and a FastAPI web layer (`api.py`) are in place. Next steps: persist
+submissions/DB in a hosted store (e.g. Postgres) instead of seed CSVs, add auth + an admin
+review UI, and replace estimated seed rows with collected real data. Business direction is
+tracked in `research/07-business-use-case.md`.

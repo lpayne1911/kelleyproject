@@ -275,15 +275,19 @@ def _next_id(rows: list[dict], id_col: str) -> int:
     return (max(ids) + 1) if ids else 1
 
 
-def ingest(
-    intake_path: Path,
+def ingest_rows(
+    raw_rows: Iterable[dict],
     *,
     submissions_path: Path = SUBMISSIONS_SEED,
     seed_dir: Path = SEED_DIR,
     dry_run: bool = False,
     today: Optional[str] = None,
 ) -> IngestReport:
-    """Validate + normalize an intake CSV and append accepted rows to the ledger."""
+    """Validate + normalize intake rows (dicts) and append accepted ones to the ledger.
+
+    This is the shared core used by both the CLI (CSV file) and the web API (one row
+    per HTTP request).
+    """
     mileage_bands = _load_bands(Path(seed_dir) / "mileage_bands.csv", "min_miles", "max_miles")
     age_bands = _load_bands(Path(seed_dir) / "age_bands.csv", "min_years", "max_years")
     known_tiers = load_known_tiers(seed_dir)
@@ -298,7 +302,7 @@ def ingest(
     new_rows: list[dict] = []
     next_id = _next_id(existing, "submission_id")
 
-    for i, raw in enumerate(read_csv_dicts(intake_path), start=1):
+    for i, raw in enumerate(raw_rows, start=1):
         report.total += 1
         errors = validate_row(raw, known_tiers)
         if errors:
@@ -318,6 +322,24 @@ def ingest(
         write_csv_dicts(submissions_path, SUBMISSION_COLUMNS, existing + new_rows)
 
     return report
+
+
+def ingest(
+    intake_path: Path,
+    *,
+    submissions_path: Path = SUBMISSIONS_SEED,
+    seed_dir: Path = SEED_DIR,
+    dry_run: bool = False,
+    today: Optional[str] = None,
+) -> IngestReport:
+    """Validate + normalize an intake CSV and append accepted rows to the ledger."""
+    return ingest_rows(
+        read_csv_dicts(intake_path),
+        submissions_path=submissions_path,
+        seed_dir=seed_dir,
+        dry_run=dry_run,
+        today=today,
+    )
 
 
 # --- Review -------------------------------------------------------------------

@@ -15,9 +15,12 @@ dependencies = []  # standard library only
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+web = ["fastapi>=0.110", "uvicorn[standard]>=0.27"]
+test-web = ["pytest>=7.0", "fastapi>=0.110", "httpx>=0.27"]
 
 [project.scripts]
 drivewayadvocate = "drivewayadvocate.cli:main"
+drivewayadvocate-web = "drivewayadvocate.api:run"
 
 [tool.setuptools.packages.find]
 where = ["src"]
