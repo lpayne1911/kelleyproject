@@ -126,7 +126,9 @@ export function computeDedupeKey(n: {
 
 export function normalizeSubmission(
   input: SubmissionInput,
-  opts: { today?: string } = {},
+  // Reserved for a future "as of" override (parity with the Python signature);
+  // age is currently derived from CURRENT_YEAR. Prefixed to mark it unused.
+  _opts: { today?: string } = {},
 ): NormalizedSubmission {
   const tier = resolveTier(input.coverageTier)!;
   const deductible = input.deductible ?? 100;
