@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   priceQuote,
   TIER_OPTIONS,
@@ -12,7 +12,7 @@ import {
   type Powertrain,
   type Drivetrain,
 } from "../lib/engine";
-import { decodeVin } from "../lib/vin";
+import { decodeVin, isValidVin } from "../lib/vin";
 
 interface Props {
   onResult: (result: QuoteResult, request: QuoteRequest) => void;
@@ -34,6 +34,7 @@ export function QuoteForm({ onResult, onError }: Props) {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
+  const [trim, setTrim] = useState("");
   const [mileage, setMileage] = useState("");
   const [termMonths, setTermMonths] = useState("60");
   const [tier, setTier] = useState("exclusionary");
@@ -46,14 +47,20 @@ export function QuoteForm({ onResult, onError }: Props) {
   const [turbo, setTurbo] = useState(false);
   const [vin, setVin] = useState("");
   const [vinState, setVinState] = useState<VinState>({ status: "idle" });
+  // VIN we last kicked a decode for — prevents the auto-decode from re-firing
+  // on every keystroke once 17 valid characters are present.
+  const decodedVinRef = useRef<string>("");
 
-  async function handleDecodeVin() {
+  async function handleDecodeVin(rawVin: string = vin) {
+    const target = rawVin.trim().toUpperCase();
+    decodedVinRef.current = target;
     setVinState({ status: "loading" });
     try {
-      const d = await decodeVin(vin);
+      const d = await decodeVin(target);
       if (d.make) setMake(d.make);
       if (d.model) setModel(d.model);
       if (d.year) setYear(String(d.year));
+      if (d.trim) setTrim(d.trim);
 
       let revealed = false;
       if (d.powertrain) {
@@ -96,6 +103,7 @@ export function QuoteForm({ onResult, onError }: Props) {
       termMonths: toNum(termMonths) ?? NaN,
       tier,
       year: toNum(year),
+      trim: trim.trim() || undefined,
       deductible: toNum(deductible),
       dealerOffer: toNum(dealerOffer),
       segment: segment || undefined,
@@ -128,8 +136,15 @@ export function QuoteForm({ onResult, onError }: Props) {
             <input
               value={vin}
               onChange={(e) => {
-                setVin(e.target.value);
-                if (vinState.status !== "idle") setVinState({ status: "idle" });
+                const next = e.target.value;
+                setVin(next);
+                const cleaned = next.trim().toUpperCase();
+                if (isValidVin(cleaned)) {
+                  // Auto-decode once we have a full, valid VIN we haven't tried.
+                  if (cleaned !== decodedVinRef.current) void handleDecodeVin(cleaned);
+                } else if (vinState.status !== "idle") {
+                  setVinState({ status: "idle" });
+                }
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -191,6 +206,14 @@ export function QuoteForm({ onResult, onError }: Props) {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             placeholder="2021"
+          />
+        </label>
+        <label>
+          Trim
+          <input
+            value={trim}
+            onChange={(e) => setTrim(e.target.value)}
+            placeholder="XLE"
           />
         </label>
         <label>
