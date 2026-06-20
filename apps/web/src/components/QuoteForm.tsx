@@ -12,11 +12,17 @@ import {
   type Powertrain,
   type Drivetrain,
 } from "../lib/engine";
+import { decodeVin } from "../lib/vin";
 
 interface Props {
   onResult: (result: QuoteResult, request: QuoteRequest) => void;
   onError: (message: string) => void;
 }
+
+type VinState =
+  | { status: "idle" | "loading" }
+  | { status: "ok"; message: string }
+  | { status: "error"; message: string };
 
 function toNum(v: string): number | undefined {
   if (v.trim() === "") return undefined;
@@ -38,6 +44,46 @@ export function QuoteForm({ onResult, onError }: Props) {
   const [powertrain, setPowertrain] = useState<Powertrain | "">("");
   const [drivetrain, setDrivetrain] = useState<Drivetrain | "">("");
   const [turbo, setTurbo] = useState(false);
+  const [vin, setVin] = useState("");
+  const [vinState, setVinState] = useState<VinState>({ status: "idle" });
+
+  async function handleDecodeVin() {
+    setVinState({ status: "loading" });
+    try {
+      const d = await decodeVin(vin);
+      if (d.make) setMake(d.make);
+      if (d.model) setModel(d.model);
+      if (d.year) setYear(String(d.year));
+
+      let revealed = false;
+      if (d.powertrain) {
+        setPowertrain(d.powertrain);
+        revealed = true;
+      }
+      if (d.drivetrain) {
+        setDrivetrain(d.drivetrain);
+        revealed = true;
+      }
+      if (d.turbo) {
+        setTurbo(true);
+        revealed = true;
+      }
+      if (revealed) setShowAdvanced(true);
+
+      const summary = [d.year, d.make, d.model].filter(Boolean).join(" ");
+      setVinState({
+        status: "ok",
+        message: summary
+          ? `Decoded ${summary} — review and adjust below.`
+          : "Decoded — review the details below.",
+      });
+    } catch (err) {
+      setVinState({
+        status: "error",
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,6 +120,50 @@ export function QuoteForm({ onResult, onError }: Props) {
         fair market range and tell you whether the offer is fair, negotiable, or
         overpriced.
       </p>
+
+      <div className="vin">
+        <label className="full">
+          Look up by VIN
+          <div className="vin__row">
+            <input
+              value={vin}
+              onChange={(e) => {
+                setVin(e.target.value);
+                if (vinState.status !== "idle") setVinState({ status: "idle" });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  void handleDecodeVin();
+                }
+              }}
+              placeholder="17-character VIN"
+              maxLength={17}
+              autoComplete="off"
+              spellCheck={false}
+              className="vin__input"
+            />
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={() => void handleDecodeVin()}
+              disabled={vinState.status === "loading" || vin.trim().length === 0}
+            >
+              {vinState.status === "loading" ? "Decoding…" : "Decode"}
+            </button>
+          </div>
+        </label>
+        {vinState.status === "ok" && (
+          <p className="vin__status vin__status--ok">✓ {vinState.message}</p>
+        )}
+        {vinState.status === "error" && (
+          <p className="vin__status vin__status--err">{vinState.message}</p>
+        )}
+      </div>
+
+      <div className="divider">
+        <span>or enter details manually</span>
+      </div>
 
       <div className="grid">
         <label>

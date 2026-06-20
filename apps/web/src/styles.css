@@ -328,6 +328,71 @@ select {
 .btn--primary:hover {
   filter: brightness(1.07);
 }
+.btn--ghost {
+  flex: none;
+  color: var(--text);
+  background: var(--elevated);
+  border: 1px solid var(--hairline-2);
+}
+.btn--ghost:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: #fff;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* VIN lookup -------------------------------------------------------------- */
+.vin {
+  margin-top: 18px;
+}
+.vin__row {
+  display: flex;
+  gap: 8px;
+}
+.vin__input {
+  flex: 1;
+  font-family: var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.vin__input::placeholder {
+  font-family: var(--font);
+  letter-spacing: normal;
+  text-transform: none;
+}
+.vin__status {
+  margin: 9px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.vin__status--ok {
+  color: var(--fair);
+}
+.vin__status--err {
+  color: var(--over);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 4px;
+  color: var(--mute);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--hairline);
+}
+
 .link-btn {
   background: none;
   border: 0;
