@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driveway Advocate — App Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#2F8C5A;          /* buyer brand / "protected" */
+    --green-deep:#246B45;
+    --green-soft:#E8F3EC;
+    --navy:#16263F;           /* advocate console authority */
+    --navy-soft:#1E3552;
+    --blue:#2E5BBF;           /* console accent / metrics */
+    --blue-soft:#EAF0FB;
+    --red:#D2382F;            /* critical / risk */
+    --red-soft:#FBEAE8;
+    --orange:#E08A1E;         /* high / warning */
+    --orange-soft:#FCF1E0;
+    --yellow:#E0B020;
+    --ink:#16263F;
+    --slate:#5B6675;
+    --slate-light:#8A929E;
+    --bg:#EFEFF3;             /* iOS system gray bg */
+    --card:#FFFFFF;
+    --line:#E6E6EC;
+    --line-soft:#F0F0F4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #f7f8fb 0%, transparent 60%),
+      linear-gradient(160deg,#e9ebf1 0%, #dfe2ea 100%);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    padding:42px 18px 64px;
+  }
+
+  .page-head{max-width:1080px;margin:0 auto 34px;text-align:center;}
+  .page-head .kicker{
+    font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--green-deep);
+  }
+  .page-head h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:8px 0 6px;}
+  .page-head p{font-size:14.5px;color:var(--slate);max-width:60ch;margin:0 auto;}
+
+  .gallery{
+    max-width:1080px;margin:0 auto;
+    display:flex;flex-wrap:wrap;gap:48px 56px;justify-content:center;align-items:flex-start;
+  }
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .phone-label{
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);
+    display:flex;align-items:center;gap:8px;
+  }
+  .phone-label .dot{width:8px;height:8px;border-radius:50%;}
+
+  /* ---------------- device frame ---------------- */
+  .phone{
+    width:300px;height:650px;
+    background:#000;
+    border-radius:46px;
+    padding:11px;
+    box-shadow:0 40px 80px -30px rgba(15,25,45,.55), 0 2px 6px rgba(0,0,0,.2);
+    position:relative;
+  }
+  .screen{
+    position:relative;
+    width:100%;height:100%;
+    background:var(--bg);
+    border-radius:36px;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .notch{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:120px;height:26px;background:#000;border-radius:0 0 16px 16px;z-index:40;
+  }
+  /* iOS status bar */
+  .statusbar{
+    flex:none;height:44px;padding:0 24px 0 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:13px;font-weight:600;color:var(--ink);z-index:30;
+  }
+  .statusbar.on-dark{color:#fff;}
+  .statusbar .sb-right{display:flex;align-items:center;gap:6px;}
+  .statusbar svg{display:block;}
+
+  /* scroll body */
+  .body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+  .body::-webkit-scrollbar{width:0;height:0;}
+  .pad{padding:6px 16px 20px;}
+
+  /* app header (below status bar) */
+  .apphead{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:6px 18px 12px;
+  }
+  .apphead__brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15.5px;color:var(--ink);}
+  .apphead__brand svg{flex:none;}
+  .apphead__right{display:flex;align-items:center;gap:12px;}
+  .live{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green);}
+  .live .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(47,140,90,.18);}
+  .icon-btn{color:var(--slate-light);display:flex;}
+
+  /* generic cards */
+  .card{background:var(--card);border-radius:16px;box-shadow:0 1px 2px rgba(20,30,55,.05),0 8px 22px -16px rgba(20,30,55,.25);}
+  .section-h{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:6px 2px 4px;display:flex;align-items:center;gap:8px;}
+  .section-sub{font-size:13px;color:var(--slate);margin:0 2px 14px;line-height:1.45;}
+
+  /* ===== screen switching ===== */
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* ============================================================
+     BUYER APP
+  ============================================================ */
+  .proto-panel{
+    background:#E9E9EF;border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:14px;
+  }
+  .proto-panel__k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-light);margin-bottom:11px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{
+    font-size:11.5px;font-weight:600;color:var(--slate);
+    background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 11px;
+  }
+  .chip.is-on{background:var(--green);color:#fff;border-color:var(--green);}
+
+  .ready-card{padding:18px 17px;margin-bottom:14px;background:linear-gradient(150deg,#fff 0%, #F3FAF5 100%);}
+  .ready-badge{
+    display:inline-flex;align-items:center;gap:6px;background:var(--green-soft);color:var(--green-deep);
+    font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;margin-bottom:12px;
+  }
+  .ready-card h2{font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink);}
+  .ready-card p{font-size:13px;color:var(--slate);margin:8px 0 16px;line-height:1.5;}
+  .btn-primary{
+    width:100%;background:var(--green);color:#fff;border:none;border-radius:13px;
+    padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 10px 20px -10px rgba(47,140,90,.7);
+  }
+  .btn-outline{
+    width:100%;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:13px;
+    padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;
+  }
+  .help-pill{
+    position:absolute;right:14px;bottom:78px;z-index:25;
+    background:var(--red);color:#fff;border:none;border-radius:999px;
+    padding:11px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;
+    display:flex;align-items:center;gap:7px;
+    box-shadow:0 12px 24px -8px rgba(210,56,47,.7);
+  }
+
+  /* ============================================================
+     ADVOCATE CONSOLE
+  ============================================================ */
+  .stat-row{display:flex;gap:9px;margin-bottom:14px;}
+  .stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 12px;}
+  .stat__n{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--ink);}
+  .stat__n.is-red{color:var(--red);}
+  .stat__l{font-size:10.5px;color:var(--slate);margin-top:6px;line-height:1.25;}
+
+  .sla-banner{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--blue-soft);border:1px solid #D9E4F8;border-radius:13px;
+    padding:12px 13px;margin-bottom:16px;font-size:12.5px;color:#274a86;line-height:1.4;
+  }
+  .sla-banner svg{flex:none;margin-top:1px;}
+
+  .list-head{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 11px;}
+  .list-head b{font-size:14px;font-weight:700;color:var(--ink);}
+  .list-head span{font-size:11.5px;color:var(--blue);font-weight:600;}
+
+  .alert{
+    position:relative;background:#fff;border:1px solid var(--line);border-radius:15px;
+    padding:14px 14px 13px;margin-bottom:12px;overflow:hidden;cursor:pointer;
+  }
+  .alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;}
+  .alert.sev-crit::before{background:var(--red);}
+  .alert.sev-high::before{background:var(--orange);}
+  .alert.sev-med::before{background:var(--yellow);}
+  .alert__top{display:flex;align-items:center;gap:10px;}
+  .avatar{
+    flex:none;width:34px;height:34px;border-radius:10px;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:.02em;
+  }
+  .alert__id{flex:1;min-width:0;}
+  .alert__name{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .alert__name b{font-size:14.5px;font-weight:700;color:var(--ink);}
+  .pill{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;}
+  .pill--crit{background:var(--red-soft);color:var(--red);}
+  .pill--high{background:var(--orange-soft);color:var(--orange);}
+  .pill--med{background:#FBF3D6;color:#9a7b12;}
+  .pill--new{background:var(--blue-soft);color:var(--blue);}
+  .pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;}
+  .pill--new::before{display:none;}
+  .alert__meta{font-size:11.5px;color:var(--slate-light);margin-top:3px;}
+  .ring{flex:none;}
+  .alert__quote{
+    font-size:12.5px;color:var(--slate);font-style:italic;line-height:1.45;
+    background:var(--line-soft);border-radius:10px;padding:9px 11px;margin:11px 0 10px;
+  }
+  .alert__foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px;}
+  .doc-chip{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--slate);font-weight:500;}
+  .doc-chip svg{color:var(--blue);}
+  .alert__foot .muted{font-size:11px;color:var(--slate-light);}
+  .riskbar{display:flex;align-items:center;gap:9px;}
+  .riskbar__track{flex:1;height:6px;border-radius:999px;background:#EDEDF1;overflow:hidden;}
+  .riskbar__fill{height:100%;border-radius:999px;}
+  .riskbar__lab{font-size:11px;font-weight:700;white-space:nowrap;}
+
+  /* detail view */
+  .detail-head{display:flex;align-items:center;gap:12px;padding:4px 16px 12px;}
+  .back-btn{background:none;border:none;cursor:pointer;color:var(--ink);display:flex;padding:2px;}
+  .detail-head__t{flex:1;font-size:15px;font-weight:700;}
+  .client-card{padding:14px 15px;margin-bottom:13px;}
+  .client-card__top{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
+  .client-card__top .t b{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .client-card__top .t span{font-size:12px;color:var(--slate-light);display:block;margin-top:3px;}
+  .field-k{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-light);margin-bottom:6px;}
+  .said{font-size:13px;color:var(--slate);font-style:italic;line-height:1.5;background:var(--line-soft);border-radius:11px;padding:11px 12px;margin-bottom:14px;}
+  .read{font-size:13px;color:var(--ink);line-height:1.55;margin-bottom:14px;}
+  .file-chip{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--blue-soft);border:1px solid #DCE6F8;border-radius:11px;padding:11px 12px;
+  }
+  .file-chip__l{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:#27407a;}
+  .file-chip__r{font-size:11px;color:var(--blue);font-weight:600;}
+
+  .scorecard{padding:15px 15px;margin-bottom:13px;}
+  .scorecard__h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .scorecard__h b{font-size:15px;font-weight:800;}
+  .scorecard__h .big{font-size:30px;font-weight:800;line-height:1;color:var(--red);}
+  .metric{margin-bottom:14px;}
+  .metric:last-child{margin-bottom:0;}
+  .metric__top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .metric__top svg{flex:none;}
+  .metric__name{flex:1;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .metric__score{font-size:13.5px;font-weight:800;}
+  .metric__note{font-size:11.5px;color:var(--slate);margin:6px 0 0;line-height:1.4;}
+  .mtrack{height:6px;border-radius:999px;background:#EDEDF1;overflow:hidden;}
+  .mfill{height:100%;border-radius:999px;}
+
+  /* templates */
+  .tabs{display:flex;gap:8px;margin:2px 0 16px;overflow-x:auto;padding-bottom:2px;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:none;font-size:12.5px;font-weight:600;color:var(--slate);
+    background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap;
+  }
+  .tab.is-on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .tpl{padding:14px 15px;margin-bottom:12px;}
+  .tpl__top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .tpl__top b{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.3;}
+  .tpl__target{flex:none;font-size:11px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:4px;}
+  .tag{display:inline-block;font-size:10px;font-weight:700;color:var(--green-deep);background:var(--green-soft);padding:4px 9px;border-radius:999px;margin:9px 0 9px;}
+  .tpl__ctx{font-size:11.5px;color:var(--slate-light);margin-bottom:8px;}
+  .tpl__body{font-size:12.5px;color:var(--slate);line-height:1.5;}
+  .tpl__body code{font-family:inherit;color:var(--blue);font-weight:600;}
+
+  /* metrics */
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .mcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 13px;}
+  .mcard__n{font-size:25px;font-weight:800;letter-spacing:-.02em;color:var(--blue);line-height:1;}
+  .mcard__l{font-size:11.5px;font-weight:600;color:var(--ink);margin-top:7px;}
+  .mcard__d{font-size:10.5px;color:var(--slate-light);margin-top:3px;}
+  .mcard__d.up{color:var(--green);}
+  .panel{padding:14px 15px;margin-bottom:13px;}
+  .panel__h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;margin-bottom:14px;}
+  .dist{margin-bottom:13px;}
+  .dist:last-child{margin-bottom:0;}
+  .dist__top{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+  .dist__top .lab{color:var(--slate);}
+  .dist__top .val{font-weight:700;color:var(--ink);}
+  .dist__track{height:7px;border-radius:999px;background:#EDEDF1;overflow:hidden;}
+  .dist__fill{height:100%;border-radius:999px;}
+  .mix__row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .mix__row:last-child{margin-bottom:0;}
+  .mix__lab{flex:none;width:92px;font-size:12px;color:var(--slate);}
+  .mix__track{flex:1;height:8px;border-radius:999px;background:#EDEDF1;overflow:hidden;}
+  .mix__fill{height:100%;border-radius:999px;background:var(--blue);}
+  .mix__val{flex:none;width:20px;text-align:right;font-size:12px;font-weight:700;color:var(--ink);}
+
+  /* bottom nav */
+  .tabbar{
+    flex:none;display:flex;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+    border-top:1px solid var(--line);padding:8px 6px 16px;
+  }
+  .nav{flex:1;background:none;border:none;cursor:pointer;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--slate-light);}
+  .nav span{font-size:10px;font-weight:600;}
+  .nav.is-on{color:var(--green);}
+  .tabbar.console .nav.is-on{color:var(--red);}
+  .tabbar.console .nav.is-on.metrics{color:var(--blue);}
+  .nav__badge{position:relative;}
+  .nav__badge i{
+    position:absolute;top:-5px;right:-8px;background:var(--red);color:#fff;
+    font-size:8px;font-weight:700;font-style:normal;min-width:14px;height:14px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;padding:0 3px;
+  }
+
+  .hint{max-width:1080px;margin:36px auto 0;text-align:center;font-size:12.5px;color:var(--slate-light);}
+
+  @media(max-width:680px){
+    body{padding:28px 10px 48px;}
+    .gallery{gap:40px 30px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="page-head">
+    <div class="kicker">Driveway Advocate · Product Prototype</div>
+    <h1>From credit score to driveway — both sides of the deal.</h1>
+    <p>Two connected apps: the <strong>buyer app</strong> that walks a client from credit work to a protected purchase, and the <strong>Advocate Console</strong> where the team triages live deals against a 30-minute SLA. Tap the bottom nav on the console to move between screens.</p>
+  </div>
+
+  <div class="gallery">
+
+    <!-- ============================================================
+         PHONE 1 — BUYER APP
+    ============================================================ -->
+    <div class="phone-wrap">
+      <div class="phone-label"><span class="dot" style="background:var(--green)"></span>Buyer App</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <!-- status bar -->
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="sb-right">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="1" fill="#16263F"/><rect x="4.5" y="4" width="3" height="7" rx="1" fill="#16263F"/><rect x="9" y="2" width="3" height="9" rx="1" fill="#16263F"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#16263F" opacity=".3"/></svg>
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M8 2.2c2 0 3.8.8 5.2 2L14.6 2.8C12.8 1 10.5 0 8 0S3.2 1 1.4 2.8L2.8 4.2C4.2 3 6 2.2 8 2.2z" fill="#16263F"/><path d="M8 5.4c1.1 0 2.1.4 2.9 1.2l1.4-1.4C11.1 4 9.6 3.4 8 3.4s-3.1.6-4.3 1.8l1.4 1.4C5.9 5.8 6.9 5.4 8 5.4z" fill="#16263F"/><circle cx="8" cy="9.2" r="1.6" fill="#16263F"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#16263F" opacity=".4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#16263F"/><rect x="23" y="4" width="1.5" height="4" rx=".75" fill="#16263F" opacity=".5"/></svg>
+            </span>
+          </div>
+          <!-- app header -->
+          <div class="apphead">
+            <div class="apphead__brand">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V5l7-3z" fill="var(--green)"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Driveway Advocate
+            </div>
+            <div class="apphead__right">
+              <span class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="pad">
+              <!-- prototype journey state -->
+              <div class="proto-panel">
+                <div class="proto-panel__k">Prototype State</div>
+                <div class="chips">
+                  <span class="chip">Quote in Hand</span>
+                  <span class="chip">Waiting on Review</span>
+                  <span class="chip">Risk Scan Result</span>
+                  <span class="chip">Credit Active</span>
+                  <span class="chip is-on">Car Ready</span>
+                  <span class="chip">Purchase Complete</span>
+                </div>
+              </div>
+
+              <!-- ready card -->
+              <div class="card ready-card">
+                <div class="ready-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.7L12 17.3 5.8 20.8l1.6-6.7L2.2 8.9l6.9-.6L12 2z"/></svg>
+                  Car ready
+                </div>
+                <h2>You're ready for deal strategy</h2>
+                <p>Now we shift from credit work to purchase protection. Time to find the right car.</p>
+                <button class="btn-primary">
+                  Start car plan
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 12h15M13 6l6 6-6 6" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+
+              <button class="btn-outline">Review summary</button>
+            </div>
+          </div>
+
+          <!-- help pill -->
+          <button class="help-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 01-9 8.4L3 21l1.1-9A8.4 8.4 0 1121 11.5z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Need help now
+          </button>
+
+          <!-- tabbar -->
+          <div class="tabbar">
+            <button class="nav is-on">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Home</span>
+            </button>
+            <button class="nav">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5l5-1.5L15 5l5-1.5v15L15 20l-6-1.5L4 20V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 3.5v15M15 5v15" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span>Plan</span>
+            </button>
+            <button class="nav">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              <span>Upload</span>
+            </button>
+            <button class="nav">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 01-9 8.4L3 21l1.1-9A8.4 8.4 0 1121 11.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              <span>Messages</span>
+            </button>
+            <button class="nav">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c.7-3.6 3.6-5.5 7-5.5s6.3 1.9 7 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span>Account</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PHONE 2 — ADVOCATE CONSOLE
+    ============================================================ -->
+    <div class="phone-wrap">
+      <div class="phone-label"><span class="dot" style="background:var(--navy)"></span>Advocate Console</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen" id="console">
+
+          <!-- status bar -->
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="sb-right">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="1" fill="#16263F"/><rect x="4.5" y="4" width="3" height="7" rx="1" fill="#16263F"/><rect x="9" y="2" width="3" height="9" rx="1" fill="#16263F"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#16263F" opacity=".3"/></svg>
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M8 2.2c2 0 3.8.8 5.2 2L14.6 2.8C12.8 1 10.5 0 8 0S3.2 1 1.4 2.8L2.8 4.2C4.2 3 6 2.2 8 2.2z" fill="#16263F"/><path d="M8 5.4c1.1 0 2.1.4 2.9 1.2l1.4-1.4C11.1 4 9.6 3.4 8 3.4s-3.1.6-4.3 1.8l1.4 1.4C5.9 5.8 6.9 5.4 8 5.4z" fill="#16263F"/><circle cx="8" cy="9.2" r="1.6" fill="#16263F"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#16263F" opacity=".4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#16263F"/><rect x="23" y="4" width="1.5" height="4" rx=".75" fill="#16263F" opacity=".5"/></svg>
+            </span>
+          </div>
+
+          <!-- ===== TRIAGE VIEW ===== -->
+          <div class="view active" data-view="triage" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+            <div class="apphead">
+              <div class="apphead__brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V5l7-3z" fill="var(--navy)"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Advocate Console
+              </div>
+              <div class="apphead__right">
+                <span class="live"><span class="dot"></span>Live</span>
+                <span class="icon-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+            <div class="body">
+              <div class="pad">
+                <div class="stat-row">
+                  <div class="stat"><div class="stat__n is-red">3</div><div class="stat__l">New alerts</div></div>
+                  <div class="stat"><div class="stat__n">1</div><div class="stat__l">Critical</div></div>
+                  <div class="stat"><div class="stat__n">19m</div><div class="stat__l">Avg SLA left</div></div>
+                </div>
+
+                <div class="sla-banner">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>30-minute response SLA — clients expect help before they sign.</span>
+                </div>
+
+                <div class="list-head"><b>New — ranked by urgency</b><span>Tap to review</span></div>
+
+                <!-- Marcus -->
+                <div class="alert sev-crit" onclick="showDetail()">
+                  <div class="alert__top">
+                    <div class="avatar">MT</div>
+                    <div class="alert__id">
+                      <div class="alert__name"><b>Marcus T.</b><span class="pill pill--crit">Critical</span><span class="pill pill--new">New</span></div>
+                      <div class="alert__meta">At dealership · 4m ago</div>
+                    </div>
+                    <svg class="ring" width="38" height="38" viewBox="0 0 38 38">
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="#EDEDF1" stroke-width="3.5"/>
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="var(--red)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="32" transform="rotate(-90 19 19)"/>
+                      <text x="19" y="23" text-anchor="middle" font-size="12" font-weight="700" fill="var(--red)">26</text>
+                    </svg>
+                  </div>
+                  <div class="alert__quote">"They changed everything. My payment went from $420 to $495 and added a bunch of stuff I didn't ask for."</div>
+                  <div class="alert__foot">
+                    <span class="doc-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 3H6v18h12V7l-4-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Doc uploaded</span>
+                    <span class="muted">3 prior msgs</span>
+                  </div>
+                  <div class="riskbar">
+                    <span style="font-size:11px;color:var(--slate-light);font-weight:600;">Risk score</span>
+                    <div class="riskbar__track"><div class="riskbar__fill" style="width:87%;background:var(--red);"></div></div>
+                    <span class="riskbar__lab" style="color:var(--red);">87/100</span>
+                  </div>
+                </div>
+
+                <!-- Priya -->
+                <div class="alert sev-high">
+                  <div class="alert__top">
+                    <div class="avatar">PN</div>
+                    <div class="alert__id">
+                      <div class="alert__name"><b>Priya N.</b><span class="pill pill--high">High</span><span class="pill pill--new">New</span></div>
+                      <div class="alert__meta">Payment changed · 11m ago</div>
+                    </div>
+                    <svg class="ring" width="38" height="38" viewBox="0 0 38 38">
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="#EDEDF1" stroke-width="3.5"/>
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="var(--orange)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="48" transform="rotate(-90 19 19)"/>
+                      <text x="19" y="23" text-anchor="middle" font-size="12" font-weight="700" fill="var(--orange)">19</text>
+                    </svg>
+                  </div>
+                  <div class="alert__quote">"The finance guy said the rate changed. My payment is now $498 instead of what we agreed on."</div>
+                  <div class="alert__foot">
+                    <span class="doc-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 3H6v18h12V7l-4-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Doc uploaded</span>
+                    <span class="muted">1 prior msg</span>
+                  </div>
+                  <div class="riskbar">
+                    <span style="font-size:11px;color:var(--slate-light);font-weight:600;">Risk score</span>
+                    <div class="riskbar__track"><div class="riskbar__fill" style="width:66%;background:var(--orange);"></div></div>
+                    <span class="riskbar__lab" style="color:var(--orange);">66/100</span>
+                  </div>
+                </div>
+
+                <!-- Devon -->
+                <div class="alert sev-med">
+                  <div class="alert__top">
+                    <div class="avatar">DW</div>
+                    <div class="alert__id">
+                      <div class="alert__name"><b>Devon W.</b><span class="pill pill--med">Medium</span><span class="pill pill--new">New</span></div>
+                      <div class="alert__meta">Quote review · 18m ago</div>
+                    </div>
+                    <svg class="ring" width="38" height="38" viewBox="0 0 38 38">
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="#EDEDF1" stroke-width="3.5"/>
+                      <circle cx="19" cy="19" r="16" fill="none" stroke="var(--yellow)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="20" transform="rotate(-90 19 19)"/>
+                      <text x="19" y="23" text-anchor="middle" font-size="12" font-weight="700" fill="#9a7b12">12</text>
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== DETAIL VIEW ===== -->
+          <div class="view" data-view="detail" style="flex-direction:column;flex:1;min-height:0;">
+            <div class="detail-head">
+              <button class="back-btn" onclick="showTriage()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="detail-head__t">Marcus T. — At dealership</div>
+              <svg class="ring" width="34" height="34" viewBox="0 0 38 38">
+                <circle cx="19" cy="19" r="16" fill="none" stroke="#EDEDF1" stroke-width="3.5"/>
+                <circle cx="19" cy="19" r="16" fill="none" stroke="var(--red)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="32" transform="rotate(-90 19 19)"/>
+                <text x="19" y="23" text-anchor="middle" font-size="12" font-weight="700" fill="var(--red)">26</text>
+              </svg>
+            </div>
+            <div class="body">
+              <div class="pad">
+                <div class="card client-card">
+                  <div class="client-card__top">
+                    <div class="avatar">MT</div>
+                    <div class="t">
+                      <b>Marcus T. <span class="pill pill--crit">Critical</span></b>
+                      <span>2024 Honda Accord EX-L · AutoNation Honda</span>
+                    </div>
+                  </div>
+                  <div class="field-k">Client said</div>
+                  <div class="said">"They changed everything. My payment went from $420 to $495 and added a bunch of stuff I didn't ask for."</div>
+                  <div class="field-k">Your read</div>
+                  <div class="read">Client is at the dealership right now. F&amp;I manager added $3,200 in paint/warranty products and pushed APR to 9.4%. Uploaded revised buyer's order 4 minutes ago.</div>
+                  <div class="file-chip">
+                    <span class="file-chip__l"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 3H6v18h12V7l-4-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>buyer's-order-revised.pdf</span>
+                    <span class="file-chip__r">Tap to view</span>
+                  </div>
+                </div>
+
+                <div class="card scorecard">
+                  <div class="scorecard__h"><b>Risk scorecard</b><span class="big">87</span></div>
+
+                  <div class="metric">
+                    <div class="metric__top">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3z" stroke="var(--red)" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="var(--red)" stroke-width="1.7" stroke-linecap="round"/></svg>
+                      <span class="metric__name">APR</span><span class="metric__score" style="color:var(--red)">91</span>
+                    </div>
+                    <div class="mtrack"><div class="mfill" style="width:91%;background:var(--red)"></div></div>
+                    <p class="metric__note">Quoted 9.4% — market is 6.8% for his profile.</p>
+                  </div>
+
+                  <div class="metric">
+                    <div class="metric__top">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3z" stroke="var(--red)" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="var(--red)" stroke-width="1.7" stroke-linecap="round"/></svg>
+                      <span class="metric__name">Add-ons</span><span class="metric__score" style="color:var(--red)">80</span>
+                    </div>
+                    <div class="mtrack"><div class="mfill" style="width:80%;background:var(--red)"></div></div>
+                    <p class="metric__note">$3,200 in undisclosed add-ons added to F&amp;I sheet.</p>
+                  </div>
+
+                  <div class="metric">
+                    <div class="metric__top">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3z" stroke="var(--orange)" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="var(--orange)" stroke-width="1.7" stroke-linecap="round"/></svg>
+                      <span class="metric__name">Term</span><span class="metric__score" style="color:var(--orange)">72</span>
+                    </div>
+                    <div class="mtrack"><div class="mfill" style="width:72%;background:var(--orange)"></div></div>
+                    <p class="metric__note">84-month vs 60-month recommended.</p>
+                  </div>
+
+                  <div class="metric">
+                    <div class="metric__top">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3z" stroke="var(--orange)" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="var(--orange)" stroke-width="1.7" stroke-linecap="round"/></svg>
+                      <span class="metric__name">Payment</span><span class="metric__score" style="color:var(--orange)">45</span>
+                    </div>
+                    <div class="mtrack"><div class="mfill" style="width:45%;background:var(--orange)"></div></div>
+                    <p class="metric__note">$95/mo higher than last quoted figure.</p>
+                  </div>
+
+                  <div class="metric">
+                    <div class="metric__top">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--green)" stroke-width="1.7"/><path d="M8.5 12l2.3 2.3 4.7-4.7" stroke="var(--green)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      <span class="metric__name">Trade-in</span><span class="metric__score" style="color:var(--green)">20</span>
+                    </div>
+                    <div class="mtrack"><div class="mfill" style="width:20%;background:var(--green)"></div></div>
+                    <p class="metric__note">Offer matches KBB fair value.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== TEMPLATES VIEW ===== -->
+          <div class="view" data-view="templates" style="flex-direction:column;flex:1;min-height:0;">
+            <div class="apphead">
+              <div class="apphead__brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V5l7-3z" fill="var(--navy)"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Advocate Console
+              </div>
+              <div class="apphead__right">
+                <span class="live"><span class="dot"></span>Live</span>
+                <span class="icon-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+            <div class="body">
+              <div class="pad">
+                <div class="section-h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5l5-1.5L15 5l5-1.5v15L15 20l-6-1.5L4 20V5z" stroke="var(--navy)" stroke-width="1.6" stroke-linejoin="round"/></svg>Response templates</div>
+                <p class="section-sub">Pre-built for 30-min SLA. Load any template into a reply with one tap.</p>
+
+                <div class="tabs">
+                  <button class="tab is-on">Reassurance</button>
+                  <button class="tab">Counter-offer</button>
+                  <button class="tab">Instructions</button>
+                  <button class="tab">Escalate</button>
+                </div>
+
+                <div class="card tpl">
+                  <div class="tpl__top">
+                    <b>I'm on it — don't sign yet</b>
+                    <span class="tpl__target"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z"/></svg>95% target</span>
+                  </div>
+                  <span class="tag">Reassurance</span>
+                  <div class="tpl__ctx">Client is at dealership, uploaded docs</div>
+                  <div class="tpl__body">Hi <code>{{clientName}}</code> — got your documents. I'm reviewing everything right now and will have y…</div>
+                </div>
+
+                <div class="card tpl">
+                  <div class="tpl__top">
+                    <b>Fee is normal — here's why</b>
+                    <span class="tpl__target"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z"/></svg>88% target</span>
+                  </div>
+                  <span class="tag">Reassurance</span>
+                  <div class="tpl__ctx">Client asking about a specific fee</div>
+                  <div class="tpl__body">Hi <code>{{clientName}}</code> — good question on the <code>{{feeName}}</code>…</div>
+                </div>
+
+                <div class="card tpl">
+                  <div class="tpl__top">
+                    <b>Deal looks clean — proceed</b>
+                    <span class="tpl__target"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z"/></svg>91% target</span>
+                  </div>
+                  <span class="tag">Reassurance</span>
+                  <div class="tpl__ctx">Risk score low, no major flags</div>
+                  <div class="tpl__body">Hi <code>{{clientName}}</code> — I reviewed your full quote on the <code>{{vehicle}}</code>…</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== METRICS VIEW ===== -->
+          <div class="view" data-view="metrics" style="flex-direction:column;flex:1;min-height:0;">
+            <div class="apphead">
+              <div class="apphead__brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V5l7-3z" fill="var(--navy)"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Advocate Console
+              </div>
+              <div class="apphead__right">
+                <span class="live"><span class="dot"></span>Live</span>
+                <span class="icon-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+            <div class="body">
+              <div class="pad">
+                <div class="section-h">Today's performance</div>
+                <div class="mgrid" style="margin-top:8px;">
+                  <div class="mcard"><div class="mcard__n">7</div><div class="mcard__l">Alerts today</div><div class="mcard__d up">+2 vs yesterday</div></div>
+                  <div class="mcard"><div class="mcard__n">11m</div><div class="mcard__l">Avg response time</div><div class="mcard__d up">1m faster than SLA</div></div>
+                  <div class="mcard"><div class="mcard__n">6/7</div><div class="mcard__l">Resolved &lt; 30min</div><div class="mcard__d">86%</div></div>
+                  <div class="mcard"><div class="mcard__n">4.9</div><div class="mcard__l">Client satisfaction</div><div class="mcard__d up">↑ from 4.7</div></div>
+                </div>
+
+                <div class="card panel">
+                  <div class="panel__h"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--ink)" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>30-minute SLA performance</div>
+
+                  <div class="dist">
+                    <div class="dist__top"><span class="lab">&lt; 10 min</span><span class="val">3 (43%)</span></div>
+                    <div class="dist__track"><div class="dist__fill" style="width:43%;background:var(--green)"></div></div>
+                  </div>
+                  <div class="dist">
+                    <div class="dist__top"><span class="lab">10–20 min</span><span class="val">2 (29%)</span></div>
+                    <div class="dist__track"><div class="dist__fill" style="width:29%;background:var(--green)"></div></div>
+                  </div>
+                  <div class="dist">
+                    <div class="dist__top"><span class="lab">20–30 min</span><span class="val">1 (14%)</span></div>
+                    <div class="dist__track"><div class="dist__fill" style="width:14%;background:var(--yellow)"></div></div>
+                  </div>
+                  <div class="dist">
+                    <div class="dist__top"><span class="lab">&gt; 30 min (missed)</span><span class="val">1 (14%)</span></div>
+                    <div class="dist__track"><div class="dist__fill" style="width:14%;background:var(--red)"></div></div>
+                  </div>
+                </div>
+
+                <div class="card panel">
+                  <div class="panel__h"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/></svg>Response type mix</div>
+                  <div class="mix__row"><span class="mix__lab">Reassurance</span><span class="mix__track"><span class="mix__fill" style="width:100%"></span></span><span class="mix__val">12</span></div>
+                  <div class="mix__row"><span class="mix__lab">Counter-offer</span><span class="mix__track"><span class="mix__fill" style="width:67%"></span></span><span class="mix__val">8</span></div>
+                  <div class="mix__row"><span class="mix__lab">Instructions</span><span class="mix__track"><span class="mix__fill" style="width:33%"></span></span><span class="mix__val">4</span></div>
+                  <div class="mix__row"><span class="mix__lab">Escalated</span><span class="mix__track"><span class="mix__fill" style="width:8%"></span></span><span class="mix__val">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- console tabbar -->
+          <div class="tabbar console">
+            <button class="nav is-on" data-nav="triage" onclick="showTriage()">
+              <span class="nav__badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <i>3</i>
+              </span>
+              <span>Triage</span>
+            </button>
+            <button class="nav" data-nav="templates" onclick="showView('templates', this)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5l5-1.5L15 5l5-1.5v15L15 20l-6-1.5L4 20V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 3.5v15M15 5v15" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span>Templates</span>
+            </button>
+            <button class="nav metrics" data-nav="metrics" onclick="showView('metrics', this)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 20V10M12 20V4M19 20v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span>Metrics</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="hint">Static clickable prototype · Tap a triage card to open the client risk scorecard, and use the bottom nav to switch between Triage, Templates, and Metrics.</p>
+
+<script>
+  var console = document.getElementById('console');
+  function setView(name){
+    console.querySelectorAll('.view').forEach(function(v){
+      v.classList.toggle('active', v.dataset.view === name);
+      v.style.display = (v.dataset.view === name) ? 'flex' : 'none';
+    });
+    console.querySelector('.body') && console.querySelectorAll('.body').forEach(function(b){b.scrollTop=0;});
+  }
+  function setNav(nav){
+    console.querySelectorAll('.tabbar.console .nav').forEach(function(n){n.classList.remove('is-on');});
+    if(nav) nav.classList.add('is-on');
+  }
+  function navByName(name){
+    var n = console.querySelector('.tabbar.console .nav[data-nav="'+name+'"]');
+    setNav(n);
+  }
+  function showView(name, nav){ setView(name); setNav(nav); }
+  function showTriage(){ setView('triage'); navByName('triage'); }
+  function showDetail(){ setView('detail'); navByName('triage'); }
+
+  // template tab toggle
+  document.querySelectorAll('.tabs .tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      this.parentNode.querySelectorAll('.tab').forEach(function(x){x.classList.remove('is-on');});
+      this.classList.add('is-on');
+    });
+  });
+</script>
+</body>
+</html>
