@@ -2,8 +2,8 @@ import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import AppHeader from '../components/AppHeader.jsx'
 import { TEMPLATES } from './data.js'
+import { BRAND } from '../theme.js'
 
-const NAVY = '#16263F'
 const TABS = Object.keys(TEMPLATES)
 
 export default function Templates() {
@@ -11,11 +11,11 @@ export default function Templates() {
 
   return (
     <>
-      <AppHeader title="Advocate Console" brandColor={NAVY} live />
+      <AppHeader title="Advocate Console" brandColor={BRAND.navy} live />
       <div className="body">
         <div className="pad">
           <h2 className="section-h">
-            <Icon name="book" size={20} style={{ color: NAVY }} />
+            <Icon name="book" size={20} style={{ color: BRAND.navy }} />
             Response templates
           </h2>
           <p className="section-sub">

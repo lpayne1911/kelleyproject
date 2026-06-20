@@ -1,8 +1,9 @@
 import Icon from '../components/Icon.jsx'
 import Ring from '../components/Ring.jsx'
 import { SCORECARD } from './data.js'
+import { TONE } from '../theme.js'
 
-const toneColor = { red: 'var(--red)', orange: 'var(--orange)', green: 'var(--green)' }
+const toneColor = TONE
 
 export default function Detail({ onBack }) {
   const { total, client, metrics } = SCORECARD
@@ -13,7 +14,7 @@ export default function Detail({ onBack }) {
           <Icon name="chevronLeft" size={22} />
         </button>
         <div className="detail-head__t">Marcus T. — At dealership</div>
-        <Ring value={26} pct={68} color="var(--red)" size={34} />
+        <Ring value={26} pct={68} color={TONE.red} size={34} />
       </div>
 
       <div className="body">

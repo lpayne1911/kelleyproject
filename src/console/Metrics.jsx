@@ -1,14 +1,13 @@
 import Icon from '../components/Icon.jsx'
 import AppHeader from '../components/AppHeader.jsx'
 import { METRICS } from './data.js'
-
-const NAVY = '#16263F'
+import { BRAND } from '../theme.js'
 
 export default function Metrics() {
   const { today, sla, mix } = METRICS
   return (
     <>
-      <AppHeader title="Advocate Console" brandColor={NAVY} live />
+      <AppHeader title="Advocate Console" brandColor={BRAND.navy} live />
       <div className="body">
         <div className="pad">
           <h2 className="section-h">Today's performance</h2>

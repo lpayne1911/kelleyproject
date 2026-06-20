@@ -2,8 +2,7 @@ import Icon from '../components/Icon.jsx'
 import Ring from '../components/Ring.jsx'
 import AppHeader from '../components/AppHeader.jsx'
 import { ALERTS } from './data.js'
-
-const NAVY = '#16263F'
+import { BRAND } from '../theme.js'
 
 function Alert({ a, onOpen }) {
   return (
@@ -51,7 +50,7 @@ function Alert({ a, onOpen }) {
 export default function Triage({ onOpen }) {
   return (
     <>
-      <AppHeader title="Advocate Console" brandColor={NAVY} live />
+      <AppHeader title="Advocate Console" brandColor={BRAND.navy} live />
       <div className="body">
         <div className="pad">
           <div className="stat-row">

@@ -5,8 +5,7 @@ import Triage from './Triage.jsx'
 import Detail from './Detail.jsx'
 import Templates from './Templates.jsx'
 import Metrics from './Metrics.jsx'
-
-const NAVY = '#16263F'
+import { BRAND } from '../theme.js'
 
 const TABS = [
   { key: 'triage', label: 'Triage', icon: 'triangle', badge: '3' },
@@ -27,7 +26,7 @@ export default function ConsoleApp() {
   }
 
   return (
-    <Phone label="Advocate Console" dotColor={NAVY}>
+    <Phone label="Advocate Console" dotColor={BRAND.navy}>
       {screens[view]}
       <TabBar items={TABS} active={activeTab} onChange={setView} variant="console" />
     </Phone>

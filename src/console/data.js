@@ -1,3 +1,5 @@
+import { TONE } from '../theme.js'
+
 export const ALERTS = [
   {
     id: 'marcus',
@@ -13,7 +15,7 @@ export const ALERTS = [
     doc: 'Doc uploaded',
     priors: '3 prior msgs',
     risk: 87,
-    color: 'var(--red)',
+    color: TONE.red,
   },
   {
     id: 'priya',
@@ -29,7 +31,7 @@ export const ALERTS = [
     doc: 'Doc uploaded',
     priors: '1 prior msg',
     risk: 66,
-    color: 'var(--orange)',
+    color: TONE.orange,
   },
   {
     id: 'devon',
@@ -40,7 +42,7 @@ export const ALERTS = [
     meta: 'Quote review · 18m ago',
     ring: 12,
     ringPct: 80,
-    color: 'var(--yellow)',
+    color: TONE.yellow,
   },
 ]
 
@@ -126,10 +128,10 @@ export const METRICS = {
     { n: '4.9', l: 'Client satisfaction', d: '↑ from 4.7', up: true },
   ],
   sla: [
-    { lab: '< 10 min', val: '3 (43%)', pct: 43, color: 'var(--green)' },
-    { lab: '10–20 min', val: '2 (29%)', pct: 29, color: 'var(--green)' },
-    { lab: '20–30 min', val: '1 (14%)', pct: 14, color: 'var(--yellow)' },
-    { lab: '> 30 min (missed)', val: '1 (14%)', pct: 14, color: 'var(--red)' },
+    { lab: '< 10 min', val: '3 (43%)', pct: 43, color: TONE.green },
+    { lab: '10–20 min', val: '2 (29%)', pct: 29, color: TONE.green },
+    { lab: '20–30 min', val: '1 (14%)', pct: 14, color: TONE.yellow },
+    { lab: '> 30 min (missed)', val: '1 (14%)', pct: 14, color: TONE.red },
   ],
   mix: [
     { lab: 'Reassurance', pct: 100, val: 12 },
