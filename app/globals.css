@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-paper-2 text-ink antialiased;
+}
+
+/* Recurring brand signature: the dotted "signing line". */
+.sign-rule {
+  border: none;
+  border-top: 2px dotted theme("colors.gold");
+  opacity: 0.85;
+}
