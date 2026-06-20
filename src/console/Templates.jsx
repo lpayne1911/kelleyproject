@@ -6,7 +6,7 @@ import { BRAND } from '../theme.js'
 
 const TABS = Object.keys(TEMPLATES)
 
-export default function Templates() {
+export default function Templates({ onLoad }) {
   const [tab, setTab] = useState('Reassurance')
 
   return (
@@ -46,6 +46,10 @@ export default function Templates() {
                   seg.startsWith('{{') ? <code key={i}>{seg}</code> : <span key={i}>{seg}</span>
                 )}
               </div>
+              <button className="tpl__load" onClick={() => onLoad({ ...tpl, category: tab })}>
+                Load into reply
+                <Icon name="chevronRight" size={14} />
+              </button>
             </div>
           ))}
         </div>

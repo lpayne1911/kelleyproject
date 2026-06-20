@@ -9,7 +9,7 @@ const STAGES = [
   'Purchase Complete',
 ]
 
-export default function Home({ onStartPlan }) {
+export default function Home({ onStartPlan, onReview }) {
   return (
     <div className="pad">
       <div className="proto-panel">
@@ -38,7 +38,7 @@ export default function Home({ onStartPlan }) {
         </button>
       </div>
 
-      <button className="btn-outline">Review summary</button>
+      <button className="btn-outline" onClick={onReview}>Review summary</button>
     </div>
   )
 }

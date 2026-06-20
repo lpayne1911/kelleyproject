@@ -5,7 +5,7 @@ import { TONE } from '../theme.js'
 
 const toneColor = TONE
 
-export default function Detail({ onBack }) {
+export default function Detail({ onBack, onReply }) {
   const { total, client, metrics } = SCORECARD
   return (
     <>
@@ -69,6 +69,11 @@ export default function Detail({ onBack }) {
               </div>
             ))}
           </div>
+
+          <button className="btn-primary" onClick={onReply}>
+            <Icon name="send" size={16} />
+            Reply to client
+          </button>
         </div>
       </div>
     </>

@@ -76,6 +76,12 @@ const paths = {
     </>
   ),
   send: <path d="M4 11.5L20 4l-7.5 16-2.2-6.3L4 11.5z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />,
+  trend: (
+    <>
+      <path d="M4 15l5-5 4 4 7-8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16 6h5v5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
 }
 
 export default function Icon({ name, size = 20, fill = 'none', style, className }) {
