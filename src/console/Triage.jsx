@@ -1,8 +1,8 @@
 import Icon from '../components/Icon.jsx'
 import Ring from '../components/Ring.jsx'
 import AppHeader from '../components/AppHeader.jsx'
-import { ALERTS } from './data.js'
 import { BRAND } from '../theme.js'
+import { useAlerts } from '../hooks/useConsole.js'
 
 function Alert({ a, onOpen }) {
   return (
@@ -48,6 +48,7 @@ function Alert({ a, onOpen }) {
 }
 
 export default function Triage({ onOpen }) {
+  const { alerts } = useAlerts()
   return (
     <>
       <AppHeader title="Advocate Console" brandColor={BRAND.navy} live />
@@ -78,7 +79,7 @@ export default function Triage({ onOpen }) {
             <span>Tap to review</span>
           </div>
 
-          {ALERTS.map((a) => (
+          {alerts.map((a) => (
             <Alert key={a.id} a={a} onOpen={a.id === 'marcus' ? onOpen : undefined} />
           ))}
         </div>

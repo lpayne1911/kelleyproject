@@ -1,30 +1,15 @@
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import Icon from '../components/Icon.jsx'
-
-const SEED_DOCS = [
-  { name: 'credit-report.pdf', meta: 'Reviewed · 3 items disputed', state: 'done' },
-  { name: 'pre-approval-letter.pdf', meta: 'Verified · 6.8% benchmark', state: 'done' },
-  { name: 'dealer-quote.pdf', meta: 'Waiting on your upload', state: 'todo' },
-]
+import { useDocuments } from '../hooks/useBuyer.js'
 
 export default function Upload() {
-  const [docs, setDocs] = useState(SEED_DOCS)
+  const { docs, addFiles } = useDocuments()
   const fileInput = useRef(null)
 
-  function pick() {
-    fileInput.current && fileInput.current.click()
-  }
+  const pick = () => fileInput.current && fileInput.current.click()
 
   function onFiles(e) {
-    const added = Array.from(e.target.files || []).map((f) => ({
-      name: f.name,
-      meta: `Uploaded just now · ${Math.max(1, Math.round(f.size / 1024))} KB`,
-      state: 'uploaded',
-    }))
-    if (added.length) {
-      // Replace the pending placeholder the first time a real file lands.
-      setDocs((prev) => [...added, ...prev.filter((d) => d.state !== 'todo')])
-    }
+    addFiles(e.target.files)
     e.target.value = ''
   }
 

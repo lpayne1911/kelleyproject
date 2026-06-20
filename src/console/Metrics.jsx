@@ -1,10 +1,11 @@
 import Icon from '../components/Icon.jsx'
 import AppHeader from '../components/AppHeader.jsx'
-import { METRICS } from './data.js'
 import { BRAND } from '../theme.js'
+import { useMetrics } from '../hooks/useConsole.js'
 
 export default function Metrics() {
-  const { today, sla, mix } = METRICS
+  const { metrics } = useMetrics()
+  const { today, sla, mix } = metrics
   return (
     <>
       <AppHeader title="Advocate Console" brandColor={BRAND.navy} live />

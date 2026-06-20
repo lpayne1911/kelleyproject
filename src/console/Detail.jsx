@@ -1,12 +1,13 @@
 import Icon from '../components/Icon.jsx'
 import Ring from '../components/Ring.jsx'
-import { SCORECARD } from './data.js'
 import { TONE } from '../theme.js'
+import { useScorecard } from '../hooks/useConsole.js'
 
 const toneColor = TONE
 
 export default function Detail({ onBack, onReply }) {
-  const { total, client, metrics } = SCORECARD
+  const { scorecard } = useScorecard()
+  const { total, client, metrics } = scorecard
   return (
     <>
       <div className="detail-head">

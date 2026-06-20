@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import AppHeader from '../components/AppHeader.jsx'
-import { TEMPLATES } from './data.js'
 import { BRAND } from '../theme.js'
-
-const TABS = Object.keys(TEMPLATES)
+import { useTemplates } from '../hooks/useConsole.js'
 
 export default function Templates({ onLoad }) {
+  const { templates } = useTemplates()
+  const TABS = Object.keys(templates)
   const [tab, setTab] = useState('Reassurance')
 
   return (
@@ -30,7 +30,7 @@ export default function Templates({ onLoad }) {
             ))}
           </div>
 
-          {TEMPLATES[tab].map((tpl) => (
+          {(templates[tab] || []).map((tpl) => (
             <div className="card tpl" key={tpl.title}>
               <div className="tpl__top">
                 <b>{tpl.title}</b>

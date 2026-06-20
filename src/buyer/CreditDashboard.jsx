@@ -1,14 +1,5 @@
 import Icon from '../components/Icon.jsx'
-
-const HISTORY = [612, 624, 631, 650, 663, 688]
-const GOAL = 720
-
-const DISPUTES = [
-  { item: 'Collection · Midland Funding', bureau: 'All bureaus', status: 'resolved' },
-  { item: 'Late payment · Capital One', bureau: 'Experian', status: 'responded' },
-  { item: 'Hard inquiry · unverified', bureau: 'TransUnion', status: 'sent' },
-  { item: 'Mixed-file address error', bureau: 'Equifax', status: 'open' },
-]
+import { useCredit } from '../hooks/useBuyer.js'
 
 const STATUS = {
   resolved: { label: 'Resolved', cls: 'ok' },
@@ -16,12 +7,6 @@ const STATUS = {
   sent: { label: 'Sent', cls: 'med' },
   open: { label: 'Open', cls: 'crit' },
 }
-
-const FACTORS = [
-  { k: 'Payment history', v: 'On track', pct: 88, tone: 'var(--green)' },
-  { k: 'Credit utilization', v: '28% — aim < 10%', pct: 52, tone: 'var(--orange)' },
-  { k: 'Credit age', v: 'Improving', pct: 64, tone: 'var(--green)' },
-]
 
 // Inline-SVG sparkline of the score history (no chart library).
 function Sparkline({ data, w = 248, h = 66, pad = 6 }) {
@@ -47,8 +32,10 @@ function Sparkline({ data, w = 248, h = 66, pad = 6 }) {
 }
 
 export default function CreditDashboard() {
-  const score = HISTORY[HISTORY.length - 1]
-  const gain = score - HISTORY[0]
+  const { credit } = useCredit()
+  const { history, goal: GOAL, factors: FACTORS, disputes: DISPUTES } = credit
+  const score = history[history.length - 1]
+  const gain = score - history[0]
   const toGoal = GOAL - score
 
   return (
@@ -70,7 +57,7 @@ export default function CreditDashboard() {
             <span className="score-hero__goal-d">{toGoal} to go</span>
           </div>
         </div>
-        <Sparkline data={HISTORY} />
+        <Sparkline data={history} />
       </div>
 
       <div className="dash-h">What's moving your score</div>
