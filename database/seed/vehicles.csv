@@ -1,0 +1,16 @@
+vehicle_id,year,make,model,trim,vehicle_class,segment,luxury_flag,powertrain,turbo_flag,drivetrain
+1,2021,Toyota,Camry,LE,sedan_midsize,mainstream,0,ice,0,fwd
+2,2021,Honda,Accord,EX,sedan_midsize,mainstream,0,ice,1,fwd
+3,2021,Ford,F-150,XLT,truck_fullsize,mainstream,0,ice,1,4wd
+4,2021,Chevrolet,Silverado 1500,LT,truck_fullsize,mainstream,0,ice,0,4wd
+5,2021,Toyota,RAV4,XLE,suv_compact,mainstream,0,ice,0,awd
+6,2021,Honda,CR-V,EX,suv_compact,mainstream,0,ice,1,awd
+7,2021,Jeep,Grand Cherokee,Limited,suv_midsize,mainstream,0,ice,0,4wd
+8,2021,Dodge,Charger,R/T,sedan_performance,performance,0,ice,0,rwd
+9,2021,BMW,3 Series,330i,luxury_sedan,luxury,1,ice,1,rwd
+10,2021,Mercedes-Benz,C-Class,C 300,luxury_sedan,luxury,1,ice,1,rwd
+11,2021,Tesla,Model 3,Long Range,ev,luxury,1,ev,0,awd
+12,2021,Hyundai,Elantra,SEL,sedan_economy,economy,0,ice,0,fwd
+13,2021,Kia,Telluride,EX,suv_midsize,mainstream,0,ice,0,awd
+14,2021,Nissan,Altima,SV,sedan_midsize,mainstream,0,ice,0,fwd
+15,2021,Subaru,Outback,Premium,suv_compact,mainstream,0,ice,0,awd

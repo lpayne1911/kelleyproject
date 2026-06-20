@@ -1,0 +1,13 @@
+tier_key,name,coverage_model,description,exclusionary_flag,typical_annual_low,typical_annual_high,relative_rank
+powertrain,Powertrain,stated_component,Engine transmission and drivetrain only,0,600,750,1
+powertrain_plus,Powertrain Plus,stated_component,Powertrain plus a few major systems,0,750,1000,2
+stated_component,Stated Component,stated_component,A defined list of covered parts and systems,0,900,1300,3
+high_tech,High-Tech / Electrical,stated_component,Electronics sensors infotainment advanced electrical,0,1000,1500,4
+comprehensive,Comprehensive,stated_component,Most major systems just short of exclusionary,0,1100,1800,5
+exclusionary,Exclusionary (Bumper-to-Bumper),exclusionary,Everything except a short exclusions list,1,1000,4000,6
+ev_hybrid,EV / Hybrid Specific,stated_component,High-voltage battery inverter e-motor EV systems,0,1500,5400,7
+wrap,Wrap,supplemental,Fills gaps while factory powertrain warranty remains,0,400,700,1
+cpo,Certified Pre-Owned,stated_component,Manufacturer CPO coverage extension,0,800,1400,3
+maintenance,Maintenance Bundle,add_on,Scheduled maintenance oil filters etc,0,200,600,1
+tire_wheel,Tire & Wheel,add_on,Road-hazard tire and wheel damage,0,100,400,1
+gap,GAP / Add-on,add_on,Loan or lease gap key dent and similar add-ons,0,300,700,1

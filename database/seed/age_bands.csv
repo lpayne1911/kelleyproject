@@ -1,0 +1,6 @@
+band_key,label,min_years,max_years,risk_score,price_mult
+0_3,0-3 years,0,3,15,0.95
+4_6,4-6 years,4,6,35,1.05
+7_10,7-10 years,7,10,55,1.20
+11_15,11-15 years,11,15,75,1.35
+15_plus,15+ years,15,,90,1.50
