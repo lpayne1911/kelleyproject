@@ -109,3 +109,37 @@ def test_ev_attribute_drives_hybrid_ev_component():
     ev = estimate_intrinsic_from_attrs(segment="mainstream", powertrain="ev")
     assert ev["hybrid_ev_components"] > ice["hybrid_ev_components"]
     assert ev["electronics_complexity"] > ice["electronics_complexity"]
+
+
+def test_missing_components_raises():
+    with pytest.raises(ValueError):
+        score_from_components({"brand_repair_cost": 10}, 1000, 1)
+
+
+def test_mileage_score_band_boundaries():
+    # Upper bound of each band is inclusive.
+    assert mileage_score(12000) == 10
+    assert mileage_score(12001) == 20
+    assert mileage_score(36000) == 20
+    assert mileage_score(60000) == 35
+    assert mileage_score(150001) == 95
+
+
+def test_age_score_band_boundaries():
+    assert age_score(3) == 15
+    assert age_score(4) == 35
+    assert age_score(15) == 75
+    assert age_score(16) == 90
+
+
+def test_negative_inputs_clamp_to_lowest_band():
+    assert mileage_score(-100) == 10
+    assert age_score(-5) == 15
+
+
+def test_top_drivers_are_intrinsic_components():
+    comps = {c: 30 for c in scoring.INTRINSIC_COMPONENTS}
+    comps["luxury_parts_cost"] = 95
+    result = score_from_components(comps, 40000, 4)
+    assert "luxury_parts_cost" in result.top_drivers
+    assert len(result.top_drivers) == 3

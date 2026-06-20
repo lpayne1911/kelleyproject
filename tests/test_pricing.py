@@ -97,3 +97,63 @@ def test_to_dict_is_json_serializable(conn):
     import json
     result = price_quote(_req(dealer_offer=2000), conn)
     json.dumps(result.to_dict())  # must not raise
+
+
+def test_to_dict_serializable_without_offer(conn):
+    import json
+    result = price_quote(_req(), conn)  # no dealer_offer
+    json.dumps(result.to_dict())
+
+
+def test_invalid_inputs_raise():
+    import pytest
+    with pytest.raises(ValueError):
+        _req(term_months=0)
+    with pytest.raises(ValueError):
+        _req(mileage=-1)
+    with pytest.raises(ValueError):
+        _req(deductible=-50)
+    with pytest.raises(ValueError):
+        _req(dealer_offer=-100)
+
+
+def test_unknown_tier_priced_as_stated_component(conn):
+    # Use a vehicle absent from the DB so neither call blends in observations,
+    # isolating the base-price equivalence (unknown tier -> stated_component proxy).
+    known = price_quote(_req(model="Corolla", tier="stated_component"), conn)
+    unknown = price_quote(_req(model="Corolla", tier="not_a_real_tier"), conn)
+    assert unknown.observed_n == 0 and known.observed_n == 0
+    assert unknown.fair_mid == known.fair_mid
+    assert any("Unknown coverage tier" in line for line in unknown.explanation)
+
+
+def test_nearest_deductible_used(conn):
+    # 137 is not in the deductible table; nearest is 100 -> same as deductible=100.
+    odd = price_quote(_req(tier="powertrain", deductible=137), conn)
+    hundred = price_quote(_req(tier="powertrain", deductible=100), conn)
+    assert odd.fair_mid == hundred.fair_mid
+
+
+def test_higher_deductible_lowers_price(conn):
+    low_ded = price_quote(_req(tier="exclusionary", deductible=0), conn)
+    high_ded = price_quote(_req(tier="exclusionary", deductible=500), conn)
+    assert high_ded.fair_mid < low_ded.fair_mid
+
+
+def test_longer_term_costs_more(conn):
+    short = price_quote(_req(tier="exclusionary", term_months=24), conn)
+    long = price_quote(_req(tier="exclusionary", term_months=60), conn)
+    assert long.fair_mid > short.fair_mid
+
+
+def test_current_warranty_adds_wrap_note(conn):
+    result = price_quote(
+        _req(tier="powertrain", current_warranty_active=True), conn
+    )
+    assert any("wrap" in line.lower() for line in result.explanation)
+
+
+def test_age_derived_from_current_year(conn):
+    from drivewayadvocate.pricing import CURRENT_YEAR
+    req = _req(year=CURRENT_YEAR - 4)
+    assert req.age_years == 4

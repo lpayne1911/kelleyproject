@@ -36,6 +36,11 @@ BASE_ANNUAL_BY_TIER: dict[str, float] = {
 }
 _DEFAULT_TIER = "stated_component"
 
+# Reference "current" year used to derive vehicle age from model year.
+CURRENT_YEAR = 2026
+# Fallback age (years) when the model year is unknown.
+DEFAULT_AGE_YEARS = 3
+
 # Mileage/age multipliers mirror database/seed/{mileage,age}_bands.csv price_mult.
 _MILEAGE_MULT = [
     (12000, 0.85), (36000, 0.95), (60000, 1.05), (85000, 1.20),
@@ -102,12 +107,21 @@ class QuoteRequest:
     turbo: bool = False
     drivetrain: str = "fwd"
 
+    def __post_init__(self) -> None:
+        if self.term_months is None or self.term_months < 1:
+            raise ValueError("term_months must be >= 1")
+        if self.mileage is None or self.mileage < 0:
+            raise ValueError("mileage must be >= 0")
+        if self.deductible is not None and self.deductible < 0:
+            raise ValueError("deductible must be >= 0")
+        if self.dealer_offer is not None and self.dealer_offer < 0:
+            raise ValueError("dealer_offer must be >= 0")
+
     @property
     def age_years(self) -> int:
         if self.year is None:
-            return 3
-        # use 2026 as "current" reference year for the foundation build
-        return max(0, 2026 - self.year)
+            return DEFAULT_AGE_YEARS
+        return max(0, CURRENT_YEAR - self.year)
 
 
 @dataclass
@@ -183,6 +197,7 @@ def price_quote(
         powertrain=req.powertrain, turbo=req.turbo, drivetrain=req.drivetrain,
     )
 
+    tier_recognized = req.tier in BASE_ANNUAL_BY_TIER
     base_annual = BASE_ANNUAL_BY_TIER.get(req.tier, BASE_ANNUAL_BY_TIER[_DEFAULT_TIER])
     term_years = max(req.term_months, 1) / 12.0
     parametric_mid = (
@@ -228,6 +243,11 @@ def price_quote(
     _assess_offer(result, fair_high, dealer_cost_est)
     _build_recommendation(result)
     _build_explanation(result, base_annual, term_years)
+    if not tier_recognized:
+        result.explanation.append(
+            f"Unknown coverage tier '{req.tier}' — priced using '{_DEFAULT_TIER}' as a "
+            "proxy. Map it to a known tier (see research/05-coverage-tiers.md)."
+        )
     _build_alternatives(result, conn)
     return result
 

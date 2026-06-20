@@ -103,15 +103,19 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "quote":
-        req = QuoteRequest(
-            make=args.make, model=args.model, year=args.year, trim=args.trim,
-            mileage=args.mileage, term_months=args.term_months,
-            term_mileage=args.term_mileage, deductible=args.deductible, tier=args.tier,
-            dealer_offer=args.dealer_offer, state=args.state,
-            current_warranty_active=args.current_warranty,
-            segment=args.segment, luxury=args.luxury, powertrain=args.powertrain,
-            turbo=args.turbo, drivetrain=args.drivetrain,
-        )
+        try:
+            req = QuoteRequest(
+                make=args.make, model=args.model, year=args.year, trim=args.trim,
+                mileage=args.mileage, term_months=args.term_months,
+                term_mileage=args.term_mileage, deductible=args.deductible, tier=args.tier,
+                dealer_offer=args.dealer_offer, state=args.state,
+                current_warranty_active=args.current_warranty,
+                segment=args.segment, luxury=args.luxury, powertrain=args.powertrain,
+                turbo=args.turbo, drivetrain=args.drivetrain,
+            )
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
         conn = _get_connection(args.db)
         try:
             result = price_quote(req, conn)
