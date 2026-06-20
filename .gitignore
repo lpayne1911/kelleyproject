@@ -12,3 +12,8 @@ dist/
 .pytest_cache/
 .venv/
 venv/
+
+# Node / TypeScript
+node_modules/
+*.tsbuildinfo
+.vitest/

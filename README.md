@@ -24,8 +24,10 @@ buying.**
 | `database/seed/` | Seed CSVs: providers, vehicles, risk scores, coverage tiers, bands, 30+ labeled pricing observations, and crowdsourced submissions. |
 | `scoring/risk-scoring-model.md` | The 1–100 vehicle warranty-risk model: variables, weights, formula, worked examples. |
 | `templates/` | Quote-collection template (for researchers) and the **submission intake** template (for crowdsourcing real offers). |
-| `src/drivewayadvocate/` | The Python tool: build the DB, score a vehicle, price a VSC, ingest real submissions, CLI, and an optional FastAPI web layer (`api.py`). |
-| `tests/` | Pytest suite for the scoring, pricing, DB, ingestion, CLI, and API layers. |
+| `src/drivewayadvocate/` | The Python backend: build the DB, score a vehicle, price a VSC, ingest real submissions, CLI. |
+| `packages/warranty-engine/` | The TypeScript port of the runtime engine (scoring + pricing + validation) for the app. |
+| `scripts/export_ts_data.py` | Regenerates the TS engine's data + parity fixtures from the Python source of truth. |
+| `tests/` | Pytest suite for the scoring, pricing, DB, ingestion, and CLI layers. |
 
 ## Data integrity
 
@@ -84,30 +86,34 @@ marked-up anchors used to measure markup); *prices actually paid* and *outside q
 the fair-price signal. See
 [`templates/submission-intake-template.md`](templates/submission-intake-template.md).
 
-## Web app + API (optional)
+## TypeScript engine (for the app)
 
-A FastAPI layer wraps the same engine + ingestion core so people can price an offer and
-"show us theirs" from a browser:
+The runtime engine — scoring, pricing, and submission validation — is also available as a
+**dependency-free TypeScript module** so it can run directly inside the app (Next.js/React
+web or React Native), with no Python at runtime:
 
-```bash
-pip install -e ".[web]"
-python -m drivewayadvocate.api        # serves http://127.0.0.1:8000
+```ts
+import { scoreVehicle, priceQuote } from "@drivewayadvocate/warranty-engine";
+
+const result = priceQuote({
+  year: 2021, make: "BMW", model: "3 Series", mileage: 45000,
+  termMonths: 36, tier: "exclusionary", dealerOffer: 4200,
+});
+// -> { fairLow, fairMid, fairHigh, dealerCostEst, negotiationTarget,
+//      verdict, recommendation, score: { fullScore, riskLabel, ... }, ... }
 ```
 
-| Route | Purpose |
-|-------|---------|
-| `GET /` | One-page UI: price-check form + submission form |
-| `POST /api/quote` | Advocacy report (JSON) for a vehicle/offer |
-| `POST /api/submissions` | Submit one real offer (queued for moderation) |
-| `GET /api/submissions?status=pending` | List submissions |
-| `GET /docs` | Auto-generated OpenAPI docs |
-
-The API is an **optional extra** — the core CLI/engine stays standard-library only.
+**Python is the source of truth for data and stays the authoring/moderation backend**
+(research, DB, the `ingest → review → promote` pipeline). `scripts/export_ts_data.py`
+regenerates the engine's data and cross-language parity fixtures, and
+`packages/warranty-engine/` holds the TS port. Parity tests assert the TS engine reproduces
+the Python engine. See [`packages/warranty-engine/README.md`](packages/warranty-engine/README.md).
 
 ## Roadmap
 
-The engine (`pricing.py` + `scoring.py`), the crowdsourced ingestion pipeline
-(`ingest.py`), and a FastAPI web layer (`api.py`) are in place. Next steps: persist
-submissions/DB in a hosted store (e.g. Postgres) instead of seed CSVs, add auth + an admin
+The Python engine (`pricing.py` + `scoring.py`), the crowdsourced ingestion pipeline
+(`ingest.py`), and the TypeScript port (`packages/warranty-engine/`) are in place. Next
+steps: wire the TS engine into the app's UI, persist submissions/DB in a hosted store (e.g.
+Postgres) instead of seed CSVs, add auth + an admin
 review UI, and replace estimated seed rows with collected real data. Business direction is
 tracked in `research/07-business-use-case.md`.

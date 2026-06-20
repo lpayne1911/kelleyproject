@@ -1,0 +1,1010 @@
+{
+  "generatedAt": "2026-06-20",
+  "scoreCases": [
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "miles": 36000,
+        "years": 3,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 18,
+        "intrinsicScore": 18,
+        "mileageScore": 20,
+        "ageScore": 15,
+        "riskLabel": "Low",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "miles": 30000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 19,
+        "intrinsicScore": 18,
+        "mileageScore": 20,
+        "ageScore": 35,
+        "riskLabel": "Low",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "miles": 120000,
+        "years": 9,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 26,
+        "intrinsicScore": 18,
+        "mileageScore": 78,
+        "ageScore": 55,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Honda",
+        "model": "Accord",
+        "miles": 45000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 23,
+        "intrinsicScore": 21,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Low",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Honda",
+        "model": "CR-V",
+        "miles": 48000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 26,
+        "intrinsicScore": 24,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "powertrainComplexity",
+          "electronicsComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Ford",
+        "model": "F-150",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 41,
+        "intrinsicScore": 42,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "modelReliability",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Chevrolet",
+        "model": "Silverado 1500",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 42,
+        "intrinsicScore": 43,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "modelReliability",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "RAV4",
+        "miles": 45000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 23,
+        "intrinsicScore": 21,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Low",
+        "source": "database",
+        "topDrivers": [
+          "electronicsComplexity",
+          "brandRepairCost",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 63,
+        "intrinsicScore": 68,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Elevated",
+        "source": "database",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Dodge",
+        "model": "Charger",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 54,
+        "intrinsicScore": 58,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Elevated",
+        "source": "database",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "BMW",
+        "model": "3 Series",
+        "miles": 45000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 65,
+        "intrinsicScore": 70,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "High",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "luxuryPartsCost",
+          "modelReliability"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Mercedes-Benz",
+        "model": "C-Class",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 67,
+        "intrinsicScore": 73,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "High",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "luxuryPartsCost",
+          "modelReliability"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Tesla",
+        "model": "Model 3",
+        "miles": 40000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 59,
+        "intrinsicScore": 64,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Elevated",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "luxuryPartsCost"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Hyundai",
+        "model": "Elantra",
+        "miles": 45000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 31,
+        "intrinsicScore": 30,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Kia",
+        "model": "Telluride",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 34,
+        "intrinsicScore": 33,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "modelReliability",
+          "electronicsComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Nissan",
+        "model": "Altima",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 39,
+        "intrinsicScore": 39,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Subaru",
+        "model": "Outback",
+        "miles": 55000,
+        "years": 5,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 35,
+        "intrinsicScore": 35,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "modelReliability",
+          "powertrainComplexity"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "BMW",
+        "model": "3 Series",
+        "miles": 36000,
+        "years": 3,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 62,
+        "intrinsicScore": 70,
+        "mileageScore": 20,
+        "ageScore": 15,
+        "riskLabel": "Elevated",
+        "source": "database",
+        "topDrivers": [
+          "brandRepairCost",
+          "luxuryPartsCost",
+          "modelReliability"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "miles": 36000,
+        "years": 3,
+        "year": 2021
+      },
+      "expected": {
+        "fullScore": 60,
+        "intrinsicScore": 68,
+        "mileageScore": 20,
+        "ageScore": 15,
+        "riskLabel": "Elevated",
+        "source": "database",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Porsche",
+        "model": "911",
+        "miles": 20000,
+        "years": 2,
+        "attrs": {
+          "segment": "luxury",
+          "luxury": true,
+          "turbo": true,
+          "drivetrain": "awd"
+        }
+      },
+      "expected": {
+        "fullScore": 62,
+        "intrinsicScore": 69,
+        "mileageScore": 20,
+        "ageScore": 15,
+        "riskLabel": "Elevated",
+        "source": "estimated",
+        "topDrivers": [
+          "brandRepairCost",
+          "luxuryPartsCost",
+          "modelReliability"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Corolla",
+        "miles": 40000,
+        "years": 4,
+        "attrs": {
+          "segment": "economy"
+        }
+      },
+      "expected": {
+        "fullScore": 30,
+        "intrinsicScore": 29,
+        "mileageScore": 35,
+        "ageScore": 35,
+        "riskLabel": "Moderate",
+        "source": "estimated",
+        "topDrivers": [
+          "modelReliability",
+          "brandRepairCost",
+          "knownFailurePoints"
+        ]
+      }
+    },
+    {
+      "input": {
+        "make": "Rivian",
+        "model": "R1T",
+        "miles": 15000,
+        "years": 2,
+        "attrs": {
+          "segment": "luxury",
+          "luxury": true,
+          "powertrain": "ev",
+          "drivetrain": "awd"
+        }
+      },
+      "expected": {
+        "fullScore": 66,
+        "intrinsicScore": 74,
+        "mileageScore": 20,
+        "ageScore": 15,
+        "riskLabel": "High",
+        "source": "estimated",
+        "topDrivers": [
+          "brandRepairCost",
+          "electronicsComplexity",
+          "luxuryPartsCost"
+        ]
+      }
+    }
+  ],
+  "priceCases": [
+    {
+      "input": {
+        "make": "BMW",
+        "model": "3 Series",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "exclusionary",
+        "dealerOffer": 4200
+      },
+      "expected": {
+        "fairLow": 3935,
+        "fairMid": 4629,
+        "fairHigh": 5323,
+        "dealerCostEst": 2546,
+        "negotiationTarget": 2946,
+        "perYearFair": 1543,
+        "observedN": 3,
+        "verdict": "FAIR",
+        "markupVsCostPct": 65,
+        "offerVsFairPct": -9,
+        "markupWarning": null,
+        "recommendation": "REASONABLE BUY \u2014 $4,200 is within fair market for this vehicle and coverage. Little left to negotiate.",
+        "confidence": "blended",
+        "fullScore": 65
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "exclusionary",
+        "dealerOffer": 4200
+      },
+      "expected": {
+        "fairLow": 2333,
+        "fairMid": 2745,
+        "fairHigh": 3157,
+        "dealerCostEst": 1510,
+        "negotiationTarget": 1910,
+        "perYearFair": 915,
+        "observedN": 2,
+        "verdict": "NEGOTIATE",
+        "markupVsCostPct": 178,
+        "offerVsFairPct": 53,
+        "markupWarning": "High markup: offer is ~2.8x the estimated dealer cost ($1,510).",
+        "recommendation": "NEGOTIATE \u2014 the $4,200 offer is above fair market. Counter toward $1,910.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 30000,
+        "termMonths": 36,
+        "tier": "powertrain"
+      },
+      "expected": {
+        "fairLow": 1242,
+        "fairMid": 1461,
+        "fairHigh": 1680,
+        "dealerCostEst": 803,
+        "negotiationTarget": 1203,
+        "perYearFair": 487,
+        "observedN": 3,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,203.",
+        "confidence": "blended",
+        "fullScore": 19
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "powertrain",
+        "dealerOffer": 6000
+      },
+      "expected": {
+        "fairLow": 1305,
+        "fairMid": 1535,
+        "fairHigh": 1766,
+        "dealerCostEst": 844,
+        "negotiationTarget": 1244,
+        "perYearFair": 512,
+        "observedN": 3,
+        "verdict": "OVERPRICED",
+        "markupVsCostPct": 611,
+        "offerVsFairPct": 291,
+        "markupWarning": "High markup: offer is ~7.1x the estimated dealer cost ($844).",
+        "recommendation": "DECLINE or NEGOTIATE HARD \u2014 the $6,000 offer is well above fair market. Counter toward $1,244; walk away if they won't move.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Honda",
+        "model": "Accord",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 48,
+        "tier": "stated_component"
+      },
+      "expected": {
+        "fairLow": 2394,
+        "fairMid": 2817,
+        "fairHigh": 3239,
+        "dealerCostEst": 1549,
+        "negotiationTarget": 1949,
+        "perYearFair": 704,
+        "observedN": 2,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,949.",
+        "confidence": "blended",
+        "fullScore": 23
+      }
+    },
+    {
+      "input": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "year": 2021,
+        "mileage": 55000,
+        "termMonths": 48,
+        "tier": "exclusionary",
+        "dealerOffer": 4200
+      },
+      "expected": {
+        "fairLow": 4806,
+        "fairMid": 5654,
+        "fairHigh": 6502,
+        "dealerCostEst": 3110,
+        "negotiationTarget": 3510,
+        "perYearFair": 1414,
+        "observedN": 1,
+        "verdict": "FAIR",
+        "markupVsCostPct": 35,
+        "offerVsFairPct": -26,
+        "markupWarning": null,
+        "recommendation": "REASONABLE BUY \u2014 $4,200 is within fair market for this vehicle and coverage. Little left to negotiate.",
+        "confidence": "blended",
+        "fullScore": 63
+      }
+    },
+    {
+      "input": {
+        "make": "Mercedes-Benz",
+        "model": "C-Class",
+        "year": 2021,
+        "mileage": 55000,
+        "termMonths": 48,
+        "tier": "exclusionary",
+        "dealerOffer": 6200
+      },
+      "expected": {
+        "fairLow": 4783,
+        "fairMid": 5627,
+        "fairHigh": 6471,
+        "dealerCostEst": 3095,
+        "negotiationTarget": 3495,
+        "perYearFair": 1407,
+        "observedN": 3,
+        "verdict": "FAIR",
+        "markupVsCostPct": 100,
+        "offerVsFairPct": 10,
+        "markupWarning": "High markup: offer is ~2.0x the estimated dealer cost ($3,095).",
+        "recommendation": "REASONABLE BUY \u2014 $6,200 is within fair market for this vehicle and coverage. Little left to negotiate.",
+        "confidence": "blended",
+        "fullScore": 67
+      }
+    },
+    {
+      "input": {
+        "make": "Tesla",
+        "model": "Model 3",
+        "year": 2021,
+        "mileage": 40000,
+        "termMonths": 36,
+        "tier": "ev_hybrid"
+      },
+      "expected": {
+        "fairLow": 3799,
+        "fairMid": 4469,
+        "fairHigh": 5140,
+        "dealerCostEst": 2458,
+        "negotiationTarget": 2858,
+        "perYearFair": 1490,
+        "observedN": 1,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$2,858.",
+        "confidence": "blended",
+        "fullScore": 59
+      }
+    },
+    {
+      "input": {
+        "make": "Ford",
+        "model": "F-150",
+        "year": 2021,
+        "mileage": 55000,
+        "termMonths": 48,
+        "tier": "comprehensive",
+        "deductible": 0
+      },
+      "expected": {
+        "fairLow": 3664,
+        "fairMid": 4311,
+        "fairHigh": 4958,
+        "dealerCostEst": 2371,
+        "negotiationTarget": 2771,
+        "perYearFair": 1078,
+        "observedN": 1,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$2,771.",
+        "confidence": "blended",
+        "fullScore": 41
+      }
+    },
+    {
+      "input": {
+        "make": "Subaru",
+        "model": "Outback",
+        "year": 2021,
+        "mileage": 55000,
+        "termMonths": 48,
+        "tier": "comprehensive"
+      },
+      "expected": {
+        "fairLow": 3105,
+        "fairMid": 3653,
+        "fairHigh": 4201,
+        "dealerCostEst": 2009,
+        "negotiationTarget": 2409,
+        "perYearFair": 913,
+        "observedN": 1,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$2,409.",
+        "confidence": "blended",
+        "fullScore": 35
+      }
+    },
+    {
+      "input": {
+        "make": "Nissan",
+        "model": "Altima",
+        "year": 2021,
+        "mileage": 120000,
+        "termMonths": 36,
+        "tier": "stated_component"
+      },
+      "expected": {
+        "fairLow": 2942,
+        "fairMid": 3462,
+        "fairHigh": 3981,
+        "dealerCostEst": 1904,
+        "negotiationTarget": 2304,
+        "perYearFair": 1154,
+        "observedN": 2,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$2,304.",
+        "confidence": "blended",
+        "fullScore": 43
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "powertrain",
+        "deductible": 500
+      },
+      "expected": {
+        "fairLow": 1205,
+        "fairMid": 1418,
+        "fairHigh": 1630,
+        "dealerCostEst": 780,
+        "negotiationTarget": 1180,
+        "perYearFair": 473,
+        "observedN": 3,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,180.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "powertrain",
+        "deductible": 0
+      },
+      "expected": {
+        "fairLow": 1358,
+        "fairMid": 1598,
+        "fairHigh": 1838,
+        "dealerCostEst": 879,
+        "negotiationTarget": 1279,
+        "perYearFair": 533,
+        "observedN": 3,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,279.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 60,
+        "tier": "exclusionary"
+      },
+      "expected": {
+        "fairLow": 3180,
+        "fairMid": 3741,
+        "fairHigh": 4303,
+        "dealerCostEst": 2058,
+        "negotiationTarget": 2458,
+        "perYearFair": 748,
+        "observedN": 2,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$2,458.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 24,
+        "tier": "exclusionary"
+      },
+      "expected": {
+        "fairLow": 1910,
+        "fairMid": 2247,
+        "fairHigh": 2584,
+        "dealerCostEst": 1236,
+        "negotiationTarget": 1636,
+        "perYearFair": 1123,
+        "observedN": 2,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,636.",
+        "confidence": "blended",
+        "fullScore": 20
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Corolla",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "stated_component"
+      },
+      "expected": {
+        "fairLow": 2424,
+        "fairMid": 2852,
+        "fairHigh": 3279,
+        "dealerCostEst": 1568,
+        "negotiationTarget": 1968,
+        "perYearFair": 951,
+        "observedN": 0,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$1,968.",
+        "confidence": "estimated",
+        "fullScore": 34
+      }
+    },
+    {
+      "input": {
+        "make": "Toyota",
+        "model": "Corolla",
+        "year": 2021,
+        "mileage": 45000,
+        "termMonths": 36,
+        "tier": "made_up_tier"
+      },
+      "expected": {
+        "fairLow": 2424,
+        "fairMid": 2852,
+        "fairHigh": 3279,
+        "dealerCostEst": 1568,
+        "negotiationTarget": 1968,
+        "perYearFair": 951,
+        "observedN": 0,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "CONSIDER \u2014 moderate risk. A contract can be worthwhile; target ~$1,968.",
+        "confidence": "estimated",
+        "fullScore": 34
+      }
+    },
+    {
+      "input": {
+        "make": "Honda",
+        "model": "CR-V",
+        "year": 2021,
+        "mileage": 55000,
+        "termMonths": 48,
+        "tier": "powertrain_plus",
+        "currentWarrantyActive": true
+      },
+      "expected": {
+        "fairLow": 2054,
+        "fairMid": 2416,
+        "fairHigh": 2779,
+        "dealerCostEst": 1329,
+        "negotiationTarget": 1729,
+        "perYearFair": 604,
+        "observedN": 2,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "OPTIONAL \u2014 this is a low-risk, reliable vehicle. A service contract is defensible to DECLINE. If you want one, target ~$1,729.",
+        "confidence": "blended",
+        "fullScore": 26
+      }
+    },
+    {
+      "input": {
+        "make": "Porsche",
+        "model": "911",
+        "year": 2022,
+        "mileage": 20000,
+        "termMonths": 48,
+        "tier": "exclusionary",
+        "segment": "luxury",
+        "luxury": true,
+        "turbo": true,
+        "drivetrain": "awd"
+      },
+      "expected": {
+        "fairLow": 5515,
+        "fairMid": 6488,
+        "fairHigh": 7461,
+        "dealerCostEst": 3568,
+        "negotiationTarget": 3968,
+        "perYearFair": 1622,
+        "observedN": 0,
+        "verdict": null,
+        "markupVsCostPct": null,
+        "offerVsFairPct": null,
+        "markupWarning": null,
+        "recommendation": "WORTH CONSIDERING \u2014 higher repair risk makes coverage valuable; target ~$3,968.",
+        "confidence": "estimated",
+        "fullScore": 63
+      }
+    }
+  ]
+}
