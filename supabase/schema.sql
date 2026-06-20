@@ -82,7 +82,9 @@ create table if not exists disputes (
 
 -- ---------- seed (mirrors src mock data) ----------
 insert into clients (id, name, vehicle, stage) values
-  ('demo-client-marcus', 'Marcus T.', '2024 Honda Accord EX-L', 'car_ready')
+  ('demo-client-marcus', 'Marcus T.', '2024 Honda Accord EX-L', 'car_ready'),
+  ('demo-client-priya',  'Priya N.',  '2023 Toyota RAV4 XLE',  'risk_scan'),
+  ('demo-client-devon',  'Devon W.',  null,                     'quote_review')
 on conflict (id) do nothing;
 
 insert into risk_scores (id, client_id, is_active, initials, client_name, severity, meta, ring, ring_pct, client_said, advocate_read, has_doc, priors, total, vehicle, file_name) values
