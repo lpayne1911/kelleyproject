@@ -4,6 +4,11 @@ How to populate the database with **real** pricing over time and keep it trustwo
 seed data ships as labeled *estimates*; this workflow replaces them with sourced
 observations.
 
+> **The primary channel is crowdsourcing** — people "show us theirs." Real offers come in
+> through the moderated ingestion pipeline (`ingest` → `review` → `promote`); see
+> [`../templates/submission-intake-template.md`](../templates/submission-intake-template.md).
+> The manual research below seeds the database and corroborates submissions.
+
 ## 1. Sources to mine
 
 | Tier | Source | What you get | Source type label |

@@ -77,3 +77,33 @@ def test_unknown_tier_proxy_note(capsys):
     out = capsys.readouterr().out
     assert rc == 0
     assert "Unknown coverage tier" in out
+
+
+def test_ingest_dry_run(capsys, tmp_path):
+    intake = tmp_path / "intake.csv"
+    intake.write_text(
+        "offer_type,provider_name,make,model,model_year,trim,mileage,state,term_months,"
+        "term_mileage,deductible,coverage_tier,price,monthly,down_payment,submitter_ref,notes\n"
+        "price_paid,Toyota dealer,Toyota,RAV4,2022,XLE,30000,CA,48,60000,100,exclusionary,2600,,0,,x\n"
+    )
+    rc = cli.main(["ingest", "--file", str(intake), "--dry-run"])
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert "[dry-run]" in out
+    assert "1 accepted" in out
+
+
+def test_review_listing_is_readonly(capsys):
+    # No --approve/--reject: just lists pending submissions, writes nothing.
+    rc = cli.main(["review"])
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert "pending submission" in out or "No pending submissions" in out
+
+
+def test_promote_noop_when_nothing_approved(capsys):
+    # Seed submissions are 'pending', so a default promote is a no-op (no file writes).
+    rc = cli.main(["promote"])
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert "promoted 0" in out

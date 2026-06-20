@@ -140,6 +140,46 @@ CREATE INDEX idx_obs_tier     ON pricing_observations(coverage_tier);
 CREATE INDEX idx_obs_class    ON pricing_observations(vehicle_class);
 
 -- ---------------------------------------------------------------------------
+-- Crowdsourced submissions ("show us yours")
+-- ---------------------------------------------------------------------------
+-- Raw, moderated intake of real offers/prices from people. Rows flow:
+--   pending -> approved/rejected (review) -> promoted (copied to pricing_observations)
+-- The pricing engine only ever reads pricing_observations, so unmoderated
+-- crowdsourced data can never silently enter the fair-price math.
+
+CREATE TABLE submissions (
+    submission_id   INTEGER PRIMARY KEY,
+    date_submitted  TEXT,                          -- ISO date
+    submitter_ref   TEXT,                          -- optional anonymized handle/contact
+    offer_type      TEXT NOT NULL,                 -- 'dealer_initial' | 'price_paid' | 'outside_quote'
+    provider_name   TEXT,
+    make            TEXT NOT NULL,
+    model           TEXT NOT NULL,
+    model_year      INTEGER,
+    trim            TEXT,
+    mileage_at_purchase INTEGER,
+    mileage_band    TEXT REFERENCES mileage_bands(band_key),
+    age_band        TEXT REFERENCES age_bands(band_key),
+    state           TEXT,
+    term_months     INTEGER,
+    term_mileage    INTEGER,
+    deductible      INTEGER,
+    coverage_tier   TEXT REFERENCES coverage_tiers(tier_key),
+    price           INTEGER,                        -- the quoted/paid price (USD)
+    per_year        INTEGER,                        -- normalized price per year
+    monthly         INTEGER,
+    down_payment    INTEGER,
+    source_type     TEXT,                           -- derived from offer_type
+    confidence      TEXT,
+    review_status   TEXT NOT NULL DEFAULT 'pending',-- pending|approved|rejected|promoted
+    dedupe_key      TEXT,                           -- stable hash to prevent re-ingest
+    notes           TEXT
+);
+
+CREATE INDEX idx_sub_status ON submissions(review_status);
+CREATE INDEX idx_sub_dedupe ON submissions(dedupe_key);
+
+-- ---------------------------------------------------------------------------
 -- Views: aggregate observations into fair-price ranges
 -- ---------------------------------------------------------------------------
 

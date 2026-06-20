@@ -1,0 +1,4 @@
+offer_type,provider_name,make,model,model_year,trim,mileage,state,term_months,term_mileage,deductible,coverage_tier,price,monthly,down_payment,submitter_ref,notes
+dealer_initial,Dealer F&I,Ford,F-150,2021,XLT,52000,TX,48,60000,100,exclusionary,4200,,0,,opening offer at signing
+price_paid,Honda dealer,Honda,CR-V,2020,EX,55000,OH,36,45000,100,powertrain_plus,1500,,0,,what I actually paid after negotiating
+outside_quote,olive,Tesla,Model 3,2021,Long Range,40000,CA,36,45000,0,exclusionary,5400,,0,,online quote I got to compare

@@ -32,6 +32,7 @@ SEED_LOAD_ORDER = [
     "vehicles",
     "vehicle_risk_scores",
     "pricing_observations",
+    "submissions",
 ]
 
 

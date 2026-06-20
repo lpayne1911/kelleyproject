@@ -21,11 +21,11 @@ buying.**
 |------|------------|
 | `research/` | Market research write-ups (overview, provider comparison, pricing factors, dealer markup, coverage tiers, workflow, business case) with cited sources. |
 | `database/schema.sql` | SQLite schema for the pricing database. |
-| `database/seed/` | Seed CSVs: providers, vehicles, risk scores, coverage tiers, bands, and 30+ labeled pricing observations. |
+| `database/seed/` | Seed CSVs: providers, vehicles, risk scores, coverage tiers, bands, 30+ labeled pricing observations, and crowdsourced submissions. |
 | `scoring/risk-scoring-model.md` | The 1–100 vehicle warranty-risk model: variables, weights, formula, worked examples. |
-| `templates/` | Quote-collection template (Markdown + CSV) for field data collection. |
-| `src/drivewayadvocate/` | The Python tool: build the DB, score a vehicle, price a VSC, run from the CLI. |
-| `tests/` | Pytest suite for the scoring and pricing engines. |
+| `templates/` | Quote-collection template (for researchers) and the **submission intake** template (for crowdsourcing real offers). |
+| `src/drivewayadvocate/` | The Python tool: build the DB, score a vehicle, price a VSC, ingest real submissions, run from the CLI. |
+| `tests/` | Pytest suite for the scoring, pricing, DB, ingestion, and CLI layers. |
 
 ## Data integrity
 
@@ -59,6 +59,30 @@ pytest -q
 The `quote` command prints an **advocacy report**: vehicle risk score, fair-market price
 range, estimated dealer cost, markup warning, negotiation target, and a
 buy / negotiate / decline recommendation.
+
+## Capturing real numbers (crowdsourced data)
+
+The seed prices are labeled estimates. Real numbers enter through a **moderated ingestion
+pipeline** — people "show us theirs" by filling
+[`templates/submission-intake-template.csv`](templates/submission-intake-template.csv):
+
+```bash
+# Validate + queue real offers (status: pending). Use --dry-run to preview.
+python -m drivewayadvocate.cli ingest --file my_offers.csv
+
+# A reviewer approves/rejects, then promotes approved rows into the engine's data
+python -m drivewayadvocate.cli review                  # list pending
+python -m drivewayadvocate.cli review --approve 4 5
+python -m drivewayadvocate.cli promote                 # -> pricing_observations
+python -m drivewayadvocate.db --build                  # reload so the engine sees them
+```
+
+Submissions land in a `submissions` ledger first; the pricing engine only reads
+`pricing_observations`, so unmoderated crowdsourced data can never silently move a price.
+Dealer *opening offers* are stored but excluded from the fair-price aggregate (they're
+marked-up anchors used to measure markup); *prices actually paid* and *outside quotes* feed
+the fair-price signal. See
+[`templates/submission-intake-template.md`](templates/submission-intake-template.md).
 
 ## Roadmap
 

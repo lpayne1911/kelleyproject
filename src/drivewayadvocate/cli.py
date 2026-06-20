@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 from . import db as db_module
+from . import ingest as ingest_module
 from .pricing import QuoteRequest, QuoteResult, price_quote
 
 
@@ -95,12 +96,79 @@ def _add_quote_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--json", action="store_true", help="emit JSON instead of a report")
 
 
+def _handle_ingest(args) -> int:
+    report = ingest_module.ingest(args.file, dry_run=args.dry_run)
+    print(("[dry-run] " if args.dry_run else "") + report.summary())
+    for row_no, errors in report.rejected:
+        print(f"  row {row_no} REJECTED: {'; '.join(errors)}", file=sys.stderr)
+    if report.duplicates:
+        print(f"  duplicate rows skipped: {report.duplicates}")
+    if report.accepted and not args.dry_run:
+        ids = [r["submission_id"] for r in report.accepted]
+        print(f"  added submissions (pending review): {ids}")
+    return 0
+
+
+def _handle_review(args) -> int:
+    if args.approve or args.reject:
+        changed = ingest_module.review(approve_ids=args.approve or [],
+                                       reject_ids=args.reject or [])
+        print(f"approved {changed['approved']}, rejected {changed['rejected']}")
+        return 0
+    pending = ingest_module.list_submissions(status="pending")
+    if not pending:
+        print("No pending submissions.")
+        return 0
+    print(f"{len(pending)} pending submission(s):")
+    for s in pending:
+        print(f"  #{s['submission_id']}: {s['model_year']} {s['make']} {s['model']} | "
+              f"{s['mileage_at_purchase']} mi | {s['term_months']}mo {s['coverage_tier']} | "
+              f"${s['price']} ({s['offer_type']}/{s['source_type']})")
+    print("Approve with: review --approve <ids...>   Reject with: review --reject <ids...>")
+    return 0
+
+
+def _handle_promote(args) -> int:
+    conn = _get_connection(args.db)
+    try:
+        result = ingest_module.promote(conn, ids=args.id or None)
+    finally:
+        conn.close()
+    print(f"promoted {result['promoted']} approved submission(s) into pricing_observations")
+    if result["promoted"]:
+        print("  rebuild the DB to load them: python -m drivewayadvocate.db --build")
+    return 0
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(prog="drivewayadvocate")
     sub = parser.add_subparsers(dest="command", required=True)
+
     quote_p = sub.add_parser("quote", help="price a VSC offer for a vehicle")
     _add_quote_args(quote_p)
+
+    ingest_p = sub.add_parser("ingest", help="validate + queue crowdsourced offers")
+    ingest_p.add_argument("--file", required=True, help="intake CSV (see templates/)")
+    ingest_p.add_argument("--dry-run", action="store_true",
+                          help="validate and report without changing anything")
+
+    review_p = sub.add_parser("review", help="list/approve/reject pending submissions")
+    review_p.add_argument("--approve", nargs="*", type=int, help="submission ids to approve")
+    review_p.add_argument("--reject", nargs="*", type=int, help="submission ids to reject")
+
+    promote_p = sub.add_parser(
+        "promote", help="copy approved submissions into pricing_observations")
+    promote_p.add_argument("--id", nargs="*", type=int, help="only promote these ids")
+    promote_p.add_argument("--db", help="path to the SQLite database")
+
     args = parser.parse_args(argv)
+
+    if args.command == "ingest":
+        return _handle_ingest(args)
+    if args.command == "review":
+        return _handle_review(args)
+    if args.command == "promote":
+        return _handle_promote(args)
 
     if args.command == "quote":
         try:
